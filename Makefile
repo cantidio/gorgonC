@@ -75,3 +75,5 @@ list:
 	
 test: ./static/libgorgon.a
 	$(COMP) test.c -o test.e ./static/libgorgon.a `allegro-config --libs` ./fmod/lib/libfmodex.so.4.08.08 -O2
+
+#oi eu sou o fim
