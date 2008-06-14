@@ -23,9 +23,9 @@ int gorgonConvertSffToSpritePack(gorgonSpritePack *spritePack, gorgonSff *sff)
     {
         if(sff!=NULL)
         {
-            spritePack->spriteNum=sff->spriteNum;
-            spritePack->sprite=(gorgonSprite *)malloc(sizeof(gorgonSprite)*spritePack->spriteNum);
-            for(i=0; i<spritePack->spriteNum; i++)
+            spritePack->spriteNumber=sff->spriteNum;
+            spritePack->sprite=(gorgonSprite *)malloc(sizeof(gorgonSprite)*spritePack->spriteNumber);
+            for(i=0; i<spritePack->spriteNumber; i++)
             {
                 spritePack->sprite[i].image	=create_bitmap_ex(8,sff->sprite[i].image->w,sff->sprite[i].image->h);
                 blit(sff->sprite[i].image,spritePack->sprite[i].image,0,0,0,0,sff->sprite[i].image->w,sff->sprite[i].image->h);
@@ -113,7 +113,7 @@ int gorgonDestroySpritePack(gorgonSpritePack *spritePack)
 	int i,error;
 	if(spritePack!=NULL)
 	{
-		for(i=0; i<spritePack->spriteNum; i++)
+		for(i=0; i<spritePack->spriteNumber; i++)
 		{
 			error=gorgonDestroySprite(&spritePack->sprite[i]);
 			if(error!=GORGON_OK) return error;
@@ -152,7 +152,7 @@ int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short ind
 {
     RGB trans = { 63 , 0 , 63 };
     BITMAP *sprite;
-    if(index<a->spriteNum)
+    if(index<a->spriteNumber)
     {
         if(&a->sprite[index]!=NULL)
         {
@@ -227,7 +227,7 @@ int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,sh
 {
     RGB trans = { 63 , 0 , 63 };
     BITMAP *sprite;
-    if(index<a->spriteNum)
+    if(index<a->spriteNumber)
     {
         if(&a->sprite[index]!=NULL)
         {
@@ -300,9 +300,9 @@ int gorgonDrawSpriteByGroup(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short gro
     {
         if(layer!=NULL)
         {
-            for(i=0; (i<a->spriteNum) && (a->sprite[i].group!=group || a->sprite[i].index!=spr); i++);
+            for(i=0; (i<a->spriteNumber) && (a->sprite[i].group!=group || a->sprite[i].index!=spr); i++);
 
-            if(i<a->spriteNum)
+            if(i<a->spriteNumber)
             {
                 sprite=create_bitmap(a->sprite[i].image->w,a->sprite[i].image->h);
                 if(pal!=NULL)

@@ -5,7 +5,7 @@
  *
  * @author: Cantídio Oliveira Fontes
  * @since: 06/06/2008
- * @final: 06/06/2008
+ * @final: 13/06/2008
  */
  
 void init()
@@ -36,16 +36,16 @@ int main()
 {
 	gorgonAnimationPack animationPack;
 	init();
-	if(gorgonCreateAnimationPack(&animationPack,1)!=GORGON_OK)							{	printf("33:\n");	return 1;	}
-	if(gorgonCreateAnimation(&animationPack.animation[0],0,4,0)!=GORGON_OK)				{	printf("34:\n");	return 1;	}
-	if(gorgonCreateFrame(&animationPack.animation[0].frame[0],0,0,0,0,10,0)!=GORGON_OK)	{	printf("35:\n");	return 1;	}
-	if(gorgonCreateFrame(&animationPack.animation[0].frame[1],0,1,0,0,10,0)!=GORGON_OK)	{	printf("36:\n");	return 1;	}
-	if(gorgonCreateFrame(&animationPack.animation[0].frame[2],0,2,0,0,10,0)!=GORGON_OK)	{	printf("37:\n");	return 1;	}
-	if(gorgonCreateFrame(&animationPack.animation[0].frame[3],0,1,0,0,10,0)!=GORGON_OK)	{	printf("38:\n");	return 1;	}
-	if(gorgonSaveAnimationPack("teste.apk",&animationPack)!=GORGON_OK)					{	printf("39:\n");	return 1;	}
-	if(gorgonDestroyAnimationPack(&animationPack)!=GORGON_OK)							{	printf("41:\n");	return 1;	}
-	if(gorgonLoadAnimationPackFromFile(&animationPack,"teste.apk")!=GORGON_OK)			{	printf("42:\n");	return 1;	}
-	if(gorgonDestroyAnimationPack(&animationPack)!=GORGON_OK)							{	printf("43:\n");	return 1;	}
+	if(gorgonCreateAnimationPack(&animationPack,1)!=GORGON_OK)				return 1;
+	if(gorgonCreateAnimation(&animationPack.animation[0],0,4,0)!=GORGON_OK)		return 1;
+	if(gorgonCreateFrame(&animationPack.animation[0].frame[0],0,0,0,0,10,0)!=GORGON_OK)	return 1;
+	if(gorgonCreateFrame(&animationPack.animation[0].frame[1],0,1,0,0,10,0)!=GORGON_OK)	return 1;
+	if(gorgonCreateFrame(&animationPack.animation[0].frame[2],0,2,0,0,10,0)!=GORGON_OK)	return 1;
+	if(gorgonCreateFrame(&animationPack.animation[0].frame[3],0,1,0,0,10,0)!=GORGON_OK)	return 1;
+	if(gorgonSaveAnimationPack("teste.apk",&animationPack)!=GORGON_OK)			return 1;
+	if(gorgonDestroyAnimationPack(&animationPack)!=GORGON_OK)				return 1;
+	if(gorgonLoadAnimationPack(&animationPack,"teste.apk")!=GORGON_OK)			return 1;
+	if(gorgonDestroyAnimationPack(&animationPack)!=GORGON_OK)				return 1;
 	denit();
 	return 0;
 }

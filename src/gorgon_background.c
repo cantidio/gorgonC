@@ -161,7 +161,7 @@ int gorgonDrawTile(BITMAP *buffer,gorgonBackground *background,short layer,short
 	{
 		for(i=0; i<background->layer[layer].tile[tile].number; i++)
 		{
-			error=gorgonShowAnimation(&background->animationPack.animation[background->layer[layer].tile[tile].animationIndex],&background->spritePack,buffer,NULL,(int)(background->posX*background->layer[layer].scrollingSpeedX)+background->layer[layer].tile[tile].posX[i],(int)(background->posY*background->layer[layer].scrollingSpeedY)+background->layer[layer].tile[tile].posY[i]);
+			error=gorgonShowAnimation(&background->animationPack.animation[background->layer[layer].tile[tile].animationIndex],&background->spritePack,buffer,NULL,(short)((background->posX + background->layer[layer].tile[tile].posX[i])*background->layer[layer].scrollingSpeedX),(short)((background->posY + background->layer[layer].tile[tile].posY[i])*background->layer[layer].scrollingSpeedY));
 			if(error!=GORGON_OK)	return error;
 		}
 		return GORGON_OK;
@@ -269,10 +269,14 @@ int gorgonDrawLayer(BITMAP *buffer,gorgonBackground *background,short layerNumbe
 int gorgonDrawLayer(BITMAP *buffer,gorgonLayer *layer,short posX,short posY, gorgonSpritePack *spritePack,gorgonAnimationPack *animationPack)
 {
 	int i,error;
+	float x;
+	float y;
 	if(layer!=NULL)
 	{
 		for(i=0; i<layer->tileNumber; i++)
 		{
+			x=
+			y=
 			error=gorgonDrawTile(buffer,&layer->tile[i],(short)(posX*layer->scrollingSpeedX),(short)(posY*layer->scrollingSpeedY),spritePack,animationPack);
 			if(error!=GORGON_OK) return error;
 		}

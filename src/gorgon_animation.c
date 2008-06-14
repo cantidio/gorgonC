@@ -212,7 +212,7 @@ int gorgonMakeAnimationIndexes(gorgonAnimation *anim, gorgonSpritePack *sprites)
         if(sprites!=NULL)
         {
             for(i=0; i<anim->frames; i++)
-                for(j=0; j<sprites->spriteNum; j++)
+                for(j=0; j<sprites->spriteNumber; j++)
                 {
                     if(anim->frame[i].group==sprites->sprite[j].group && anim->frame[i].spr==sprites->sprite[j].index)
                     {

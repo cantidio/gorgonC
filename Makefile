@@ -7,29 +7,31 @@ COMP := g++
 
 all: STATIC #SHARED
 
-STATIC: GORGON_PALETTE GORGON_PCX GORGON_SFF GORGON_SPRITE GORGON_SOUND GORGON_ANIMATION GORGON_ANIMATION_FILE GORGON_BACKGROUND
+STATIC: GORGON_PALETTE GORGON_PCX GORGON_SFF GORGON_SPRITE GORGON_SPRITE_FILE GORGON_SOUND GORGON_ANIMATION GORGON_ANIMATION_FILE GORGON_BACKGROUND
 	ar rc libgorgon.a				\
 	./obj/gorgon_palette.o			\
-	./obj/gorgon_pcx.o				\
-	./obj/gorgon_sff.o				\
+	./obj/gorgon_pcx.o			\
+	./obj/gorgon_sff.o			\
 	./obj/gorgon_sprite.o			\
+	./obj/gorgon_sprite_file.o		\
 	./obj/gorgon_sound.o			\
-	./obj/gorgon_animation.o 		\
-	./obj/gorgon_animation_file.o	\
+	./obj/gorgon_animation.o    		\
+	./obj/gorgon_animation_file.o		\
 	./obj/gorgon_background.o
 	mv ./libgorgon.a ./static/libgorgon.a
 
 #SHARED: GORGON_ANIMATION GORGON_ANIMATION_FILE GORGON_PALETTE GORGON_SFF GORGON_SOUND GORGON_SPRITE 
 #	gcc -shared -Wl,-soname,libgorgon.so.0.0.1 -o libgorgon.so.0.0.1 \
 #	./obj/gorgon_palette.o 			\	
-#	./obj/gorgon_pcx.o				\
-#	./obj/gorgon_sff.o				\
+#	./obj/gorgon_pcx.o			\
+#	./obj/gorgon_sff.o			\
 #	./obj/gorgon_sprite.o			\
+#	./obj/gorgon_sprite_file.o		\
 #	./obj/gorgon_sound.o			\
 #	./obj/gorgon_animation.o		\
-#	./obj/gorgon_animation_file.o	\
+#	./obj/gorgon_animation_file.o		\
 #	./obj/gorgon_background.o		\
-#	./fmod/lib/libfmodex.so.4.08.08 \
+#	./fmod/lib/libfmodex.so.4.08.08 	\
 #	$ ln -s libfoo.so.1.0 libfoo.so.1
 #	$ ln -s libfoo.so.1 libfoo.so
 #	$ LD_LIBRARY_PATH=`pwd`:$LD_LIBRARY_PATH ; export LD_LIBRARY_P
@@ -54,6 +56,10 @@ GORGON_SPRITE: ./src/gorgon_sprite.c ./include/gorgon_sprite.h
 	$(COMP) -c ./src/gorgon_sprite.c
 	mv gorgon_sprite.o ./obj/gorgon_sprite.o
 
+GORGON_SPRITE_FILE: ./src/gorgon_sprite_file.c ./include/gorgon_sprite_file.h
+	$(COMP) -c ./src/gorgon_sprite_file.c
+	mv gorgon_sprite_file.o ./obj/gorgon_sprite_file.o
+
 GORGON_SOUND: ./include/gorgon_sound.h ./src/gorgon_sound.c ./fmod/include/fmod.h ./fmod/lib/libfmodex.so.4.08.08
 	$(COMP) -c ./src/gorgon_sound.c 
 	mv gorgon_sound.o ./obj/gorgon_sound.o
@@ -74,6 +80,6 @@ list:
 	ar tv libgorgon.a
 	
 test: ./static/libgorgon.a
-	$(COMP) test.c -o test.e ./static/libgorgon.a `allegro-config --libs` ./fmod/lib/libfmodex.so.4.08.08 -O2
+	$(COMP) ./testes/test.c -o ./testes/test.e ./static/libgorgon.a `allegro-config --libs` ./fmod/lib/libfmodex.so.4.08.08 -O2
 
 #oi eu sou o fim

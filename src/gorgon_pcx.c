@@ -20,57 +20,57 @@
 int gorgonLoadPcxFromMemory(BITMAP **image,char *data,int *ofs)
 {
 	char	*identifier;
-    char	*version;
-    char	*encoding;
-    char	*bitsPerPixel;
-    short	*xStart;
-    short	*yStart;
-    short	*xEnd;
-    short	*yEnd;
-    short	*hRes;
-    short	*vRes;
-    char	*palette;
-    char	*reserved;
+	char	*version;
+	char	*encoding;
+	char	*bitsPerPixel;
+	short	*xStart;
+	short	*yStart;
+	short	*xEnd;
+	short	*yEnd;
+	short	*hRes;
+	short	*vRes;
+	char	*palette;
+	char	*reserved;
 	char	*vnumBitPlanes;
 	short	*bytesPerLine;
-    short	*paletteType;
+	short	*paletteType;
   	char	*filler;
+
   	if(data!=NULL)
   	{
-	    identifier		= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
-	    version			= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
-	    encoding		= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
-	    bitsPerPixel	= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
-	    xStart			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
-	    yStart			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
-	    xEnd			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
-	    yEnd			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
-	    hRes			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
-	    vRes			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
-	    palette			= (char *)&data[*ofs];	(*ofs)+=48*sizeof(char);//paleta de 16 cores
-	    reserved		= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
-	    vnumBitPlanes	= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
-	    bytesPerLine	= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
-	    paletteType		= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
-	    filler			= (char *)&data[*ofs];	(*ofs)+=58*sizeof(char);//informação inutil...
-
-	    if(*bitsPerPixel==8)
-	    {
-	    	short w=*xEnd-*xStart+1;
-	    	short h=*yEnd-*yStart+1;
-	    	short y;
-	    	short x;
-	    	int value;
-	    	int count;
-	    	*image=create_bitmap_ex(8,w,h);
-	    	for (y=0; y < h; ++y)
+		identifier		= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
+		version			= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
+		encoding		= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
+		bitsPerPixel		= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
+		xStart			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
+		yStart			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
+		xEnd			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
+		yEnd			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
+		hRes			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
+		vRes			= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
+		palette			= (char *)&data[*ofs];	(*ofs)+=48*sizeof(char);//paleta de 16 cores
+		reserved		= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
+		vnumBitPlanes		= (char *)&data[*ofs];	(*ofs)+=sizeof(char);
+		bytesPerLine		= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
+		paletteType		= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
+		filler			= (char *)&data[*ofs];	(*ofs)+=58*sizeof(char);//informação inutil...
+printf("bitsPerPixel: %d\n",*bitsPerPixel);
+		if(*bitsPerPixel==8)
+		{
+			short w=*xEnd-*xStart+1;
+			short h=*yEnd-*yStart+1;
+			short y;
+			short x;
+			int value;
+			int count;
+			*image=create_bitmap_ex(8,w,h);
+			for (y=0; y < h; ++y)
 			{
 				x=0;
 				while (x < *bytesPerLine)
 				{
 					value = data[*ofs]; //check if upper 2 bit are set
 					(*ofs) +=1;
-
 					if ((value & 0xc0) == 0xc0)
 					{
 						count = value & 0x3f;
@@ -89,7 +89,7 @@ int gorgonLoadPcxFromMemory(BITMAP **image,char *data,int *ofs)
 				}
 			}
 			return GORGON_OK;
-	    }
+		}
 		return GORGON_INVALID_IMAGE;
 	}
 	return GORGON_INVALID_MEMORY;
@@ -116,20 +116,20 @@ int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
 	int 	y;
 	int 	depth;
 	
-	char	identifier		= 10;
-    char	version			= 5;
-    char	encoding		= 1;
-    char	bitsPerPixel	= 8;
-    short	xStart			= 0;
-    short	yStart			= 0;
-    short	xEnd			= 0;
-    short	yEnd			= 0;
-    short	hRes			= 320;
-    short	vRes			= 200;
-    char	reserved		= 0;
-    char	bitPlanes		= 0;
-    short	bytesPerLine	= 0;
-    short	paletteType		= 1;
+	char	identifier	= 10;
+	char	version		= 5;
+	char	encoding	= 1;
+	char	bitsPerPixel	= 8;
+	short	xStart		= 0;
+	short	yStart		= 0;
+	short	xEnd		= 0;
+	short	yEnd		= 0;
+	short	hRes		= 320;
+	short	vRes		= 200;
+	char	reserved	= 0;
+	char	bitPlanes	= 0;
+	short	bytesPerLine	= 0;
+	short	paletteType	= 1;
   	char	filler[58];
 	
 	if(f!=NULL)
@@ -143,7 +143,7 @@ int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
 		  	xEnd		= image->w-1;
 		  	yEnd		= image->h-1;
 		  	bitPlanes	= (depth==8) ? 1 : 3;
-		  	bytesPerLine= image->w;
+		  	bytesPerLine	= image->w;
 
 			fwrite(&identifier,1,sizeof(char),f);
 			fwrite(&version,1,sizeof(char),f);
@@ -166,14 +166,15 @@ int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
 			
 			for (y=0; y<image->h; y++)
 			{
-				count	= 0;
-				savePixel		= 0;
+				count		= 0;
+				savePixel	= 0;
 				for (x=0; x<image->w*bitPlanes; x++)
 				{
-					if (depth == 8)	pixel = getpixel(image, x, y);
+					if (depth == 8)
+						pixel = getpixel(image, x, y);
 					else
 					{
-				    	if (x<image->w)
+						if (x<image->w)
 						{
 							pixel = getpixel(image, x, y);
 							pixel = getr_depth(depth, pixel);
@@ -191,8 +192,8 @@ int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
 					}
 					if (count==0)
 					{
-						count = 1;
-						savePixel = pixel;
+						count 		= 1;
+						savePixel	= pixel;
 					}
 					else
 					{
@@ -204,8 +205,8 @@ int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
 								fwrite(&count,1,sizeof(char),f);
 							}
 							fwrite(&savePixel,1,sizeof(char),f);
-							count = 1;
-							savePixel = pixel;
+							count 		= 1;
+							savePixel 	= pixel;
 						}
 						else	count++;
 					}
@@ -223,6 +224,7 @@ int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
 				fwrite(&pixel,1,sizeof(char),f);
 				gorgonSavePalette(pal,f);
 			}
+			return GORGON_OK;
 		}
 		return GORGON_INVALID_IMAGE;
 	}

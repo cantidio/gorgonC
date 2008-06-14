@@ -27,7 +27,7 @@ typedef struct
 typedef struct
 {
 	gorgonSprite *sprite;
-	short spriteNum;
+	short spriteNumber;
 }gorgonSpritePack;
 
 int gorgonConvertSffToSpritePack(gorgonSpritePack *spritePack, gorgonSff *sff);

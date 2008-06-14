@@ -13,6 +13,7 @@
 #include <allegro.h>
 #include "gorgon_error.h"
 
+int gorgonLoadPalette_fm(RGB **pal,char *data,int *ofs);
 int gorgonLoadPaletteFromMemory(char *data,RGB **pal);
 int gorgonLoadInversedPaletteFromMemory(char *data,RGB **pal);
 int gorgonUnloadPalette(RGB **pal);

@@ -1,5 +1,41 @@
 #include "../include/gorgon_palette.h"
-
+/**
+ * funcao para carregar uma palheta de cores direto da memória
+ *
+ * @autor: Cantidio Oliveira Fontes
+ * @since: 29/04/2008
+ * @final: 13/06/2008
+ * @param: unsigned char * dados da palheta
+ * @param: RGB ** apontador de apontador de um RGB
+ * @return: int gorgon_error
+ * @exemple:
+ *      RGB *pal;
+ *      unsigned char *data;
+ *      if(gorgonLoadPaletteFromMemory(data,&pal)!=GORGON_OK)
+ *          printf("erro\n");
+ */
+int gorgonLoadPalette_fm(RGB **pal,char *data,int *ofs)
+{
+	int i;
+	unsigned char *r;
+	unsigned char *g;
+	unsigned char *b;
+	*pal=(RGB*)calloc(256,sizeof(RGB));
+	if(*pal!=NULL)
+	{
+		for(i=0; i<256; i++)
+		{
+			r = (unsigned char*)&data[*ofs];	(*ofs)+=sizeof(unsigned char);
+			g = (unsigned char*)&data[*ofs];	(*ofs)+=sizeof(unsigned char);	
+			b = (unsigned char*)&data[*ofs];	(*ofs)+=sizeof(unsigned char);
+			(*pal)[i].r = *r/4;
+			(*pal)[i].g = *g/4;
+			(*pal)[i].b = *b/4;
+		}
+		return GORGON_OK;
+	}
+	return GORGON_INVALID_PALETTE;
+}
 /**
  * funcao para carregar uma palheta de cores direto da memória
  *
