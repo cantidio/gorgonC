@@ -296,7 +296,7 @@ int gorgonDrawPalette(BITMAP *layer,RGB *palette)
 int gorgonCopyPalette(RGB **palette1, RGB *palette2)
 {
 	short i;
-	if(*palette1!=NULL && palette2!=NULL)
+	if(palette2!=NULL)
 	{
 		*palette1=(RGB*)calloc(256,sizeof(RGB));
 		if(*palette1!=NULL)
