@@ -25,7 +25,7 @@ typedef struct
 
 typedef struct
 {
-    gorgonClsn clsnRed; //ataque
+	gorgonClsn clsnRed; //ataque
 	gorgonClsn clsnBlue;//dano
 	gorgonClsn clsnUp;  //cima
 	gorgonClsn clsnLeft;//esquerda
@@ -37,7 +37,7 @@ typedef struct
 	short x;
 	short y;
 	short time;
-	short effect;
+	short effect;		// NORMAL, H_FLIP,V_FLIP,HV_FLIP
 	short angle;		//angulo de rotação desse sprite
 	short trans;		//valor de transparencia desse sprite
 }gorgonFrame;
@@ -45,8 +45,8 @@ typedef struct
 typedef struct
 {
 	short action;
-    gorgonFrame *frame;
-    short looping;
+	gorgonFrame *frame;
+	short looping;
 	short frames;
 	short frameOn;
 	short timeOn;
@@ -54,8 +54,8 @@ typedef struct
 
 typedef struct
 {
-    gorgonAnimation *animation;
-    short animationNumber;
+	gorgonAnimation *animation;
+	short animationNumber;
 }gorgonAnimationPack;
 
 int gorgonCreateClsn(gorgonClsn *clsn,short number);

@@ -5,7 +5,7 @@
  *
  * @author: Cantídio Oliveira Fontes
  * @since: 30/04/2008
- * @final: 11/06/2008
+ * @final: 15/06/2008
  * @param: gorgonSpritePack *, ponteiro para uma gorgonSpritePack
  * @param: SFFEntry, ponteiro para um arquivo sff
  * @example:
@@ -37,7 +37,7 @@ int gorgonConvertSffToSpritePack(gorgonSpritePack *spritePack, gorgonSff *sff)
 					spritePack->sprite[i].group	=sff->sprite[i].group;
 					spritePack->sprite[i].index	=sff->sprite[i].index;
 					error=gorgonCopyPalette(&spritePack->sprite[i].pal,sff->sprite[i].pal);
-					if(error!=GORGON_OK) return error;
+					if(error!=GORGON_OK)	return error;
 				}
 				return GORGON_OK;
 			}

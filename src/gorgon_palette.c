@@ -331,29 +331,34 @@ int gorgonCopyPalette(RGB **palette1, RGB *palette2)
  * BITMAP *img;
  * gorgonCreatePaletteFromImage(img,pal,255,0,255);
 */
-void gorgonCreatePaletteFromImage(RGB *palette,BITMAP *a,int r,int g,int b)
+int gorgonCreatePaletteFromImage(RGB *palette,BITMAP *image,int r,int g,int b)
 {
 	int x,y,z;
 	int color;
 	int trans=makecol32(r,g,b);
-	for(z=0; z<256; palette[z].r=r,palette[z].g=g,palette[z].b=b,z++);
-	for(x=0; x<a->w; x++)
+	if(image!=NULL)
 	{
-		for(y=0; y<a->h; y++)
+		for(z=0; z<256; palette[z].r=r,palette[z].g=g,palette[z].b=b,z++);
+		for(x=0; x<image->w; x++)
 		{
-			color=_getpixel32(a,x,y);
-			if(color!=trans)
+			for(y=0; y<image->h; y++)
 			{
-				for(z=1; z<256 && color!=makecol(palette[z].r,palette[z].g,palette[z].b); z++)
-					if(trans==makecol32(palette[z].r,palette[z].g,palette[z].b))
-					{
-						palette[z].r=getr32(color);
-						palette[z].g=getg32(color);
-						palette[z].b=getb32(color);
-						break;
-					}
+				color=_getpixel32(image,x,y);
+				if(color!=trans)
+				{
+					for(z=1; z<256 && color!=makecol(palette[z].r,palette[z].g,palette[z].b); z++)
+						if(trans==makecol32(palette[z].r,palette[z].g,palette[z].b))
+						{
+							palette[z].r=getr32(color);
+							palette[z].g=getg32(color);
+							palette[z].b=getb32(color);
+							break;
+						}
+				}
 			}
 		}
+		for(z=0; z<256; palette[z].r/=4,palette[z].g/=4,palette[z].b/=4,z++);
+		return GORGON_OK;
 	}
-	for(z=0; z<256; palette[z].r/=4,palette[z].g/=4,palette[z].b/=4,z++);
+	return GORGON_INVALID_IMAGE;
 }
