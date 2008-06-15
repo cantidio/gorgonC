@@ -13,8 +13,7 @@ void init()
 	int depth;
 	if (allegro_init() != 0)	exit(1);
 	install_timer();
-	install_keyboard(
-);
+	install_keyboard();
 	key[KEY_ENTER]=0;
 	install_mouse();
 	depth = desktop_color_depth();
@@ -22,10 +21,10 @@ void init()
 	set_color_depth(depth);
 
 	if(set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0))
-    {
-        if (set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0))
-        	exit(1);
-    }
+	{
+		if (set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0))
+			exit(1);
+	}
 }
 
 void denit()
@@ -39,10 +38,9 @@ int main()
 	gorgonSpritePack spritePack1;
 	gorgonSpritePack spritePack;
 	init();
-	if(gorgonLoadSpritePackFromSff(&spritePack1,"alucard.sff")!=GORGON_OK)			return 1;
+	if(gorgonLoadSpritePackFromSff(&spritePack1,"alucard.sff")!=GORGON_OK)		return 1;
 	if(gorgonSaveSpritePack("alucard.spk",&spritePack1)!=GORGON_OK)			return 1;
-	if(gorgonLoadSpritePack(&spritePack,"alucard.spk")!=GORGON_OK)				return 1;
-
+	if(gorgonLoadSpritePack(&spritePack,"alucard.spk")!=GORGON_OK)			return 1;
 
 	while(!key[KEY_ESC])
 	{

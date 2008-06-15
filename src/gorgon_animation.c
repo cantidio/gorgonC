@@ -14,26 +14,26 @@
  * gorgonClsn Clsn;
  *
  *  if(gorgonCreateClsn(&Clsn,number)!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
 int gorgonCreateClsn(gorgonClsn *clsn,short number)
 {
-    if(clsn!=NULL)
-    {
-        if(number>0)
-        {
-            clsn->boxNumber=number;
-            clsn->x1=(short *)calloc(number,sizeof(short));
-            clsn->x2=(short *)calloc(number,sizeof(short));
-            clsn->y1=(short *)calloc(number,sizeof(short));
-            clsn->y2=(short *)calloc(number,sizeof(short));
-            if(clsn->x1==NULL || clsn->x2==NULL || clsn->y1==NULL || clsn->y2==NULL)
-                return GORGON_MEMORY_ERROR;
-            return GORGON_OK;
-        }
-        return GORGON_INVALID_INDEX;
-    }
-    return GORGON_INVALID_CLSN;
+	if(clsn!=NULL)
+	{
+		if(number>0)
+		{
+			clsn->boxNumber=number;
+			clsn->x1=(short *)calloc(number,sizeof(short));
+			clsn->x2=(short *)calloc(number,sizeof(short));
+			clsn->y1=(short *)calloc(number,sizeof(short));
+			clsn->y2=(short *)calloc(number,sizeof(short));
+			if(clsn->x1==NULL || clsn->x2==NULL || clsn->y1==NULL || clsn->y2==NULL)
+				return GORGON_MEMORY_ERROR;
+			return GORGON_OK;
+		}
+		return GORGON_INVALID_INDEX;
+	}
+	return GORGON_INVALID_CLSN;
 }
 /**
  * funçao para setar os valores de uma Colisão
@@ -54,23 +54,23 @@ int gorgonCreateClsn(gorgonClsn *clsn,short number)
  * gorgonClsn Clsn;
  *
  *  if(gorgonSetClsnValues(&Clsn,index,x1,x2,y1,y2)!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
 int gorgonSetClsnValues(gorgonClsn *clsn,short index,short x1,short x2,short y1, short y2)
 {
-    if(clsn!=NULL)
-    {
-        if(index<clsn->boxNumber)
-        {
-            clsn->x1[index]=x1;
-            clsn->x2[index]=x2;
-            clsn->y1[index]=y1;
-            clsn->y2[index]=y2;
-            return GORGON_OK;
-        }
-        return GORGON_INVALID_INDEX;
-    }
-    return GORGON_INVALID_CLSN;
+	if(clsn!=NULL)
+	{
+		if(index<clsn->boxNumber)
+		{
+			clsn->x1[index]=x1;
+			clsn->x2[index]=x2;
+			clsn->y1[index]=y1;
+			clsn->y2[index]=y2;
+			return GORGON_OK;
+		}
+		return GORGON_INVALID_INDEX;
+	}
+	return GORGON_INVALID_CLSN;
 }
 /**
  * funçao para criar um frame de uma animação
@@ -92,35 +92,35 @@ int gorgonSetClsnValues(gorgonClsn *clsn,short index,short x1,short x2,short y1,
  * gorgonFrame frame;
  *
  *  if(gorgonCreateFrame(&frame,group,sprite,x,y,time,effect)!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
-int gorgonCreateFrame(gorgonFrame *a, short group,short spr,short x, short y,short time, short effect)
+int gorgonCreateFrame(gorgonFrame *frame, short group,short spr,short x, short y,short time, short effect)
 {
-    if(a!=NULL)
-    {
-        a->group=group;
-        a->spr=spr;
-        a->index=-1;
-        a->x=x;
-        a->y=y;
-        a->time=time;
-        a->effect=effect;
-        a->clsnBlue.boxNumber=0;
-        a->clsnRed.boxNumber=0;
-        a->clsnUp.boxNumber=0;
-        a->clsnLeft.boxNumber=0;
-        a->clsnDown.boxNumber=0;
-        a->clsnRight.boxNumber=0;
-        return GORGON_OK;
-    }
-    return GORGON_INVALID_FRAME;
+	if(frame!=NULL)
+	{
+		frame->group			= group;
+		frame->spr			= spr;
+		frame->index			= -1;
+		frame->x			= x;
+		frame->y			= y;
+		frame->time			= time;
+		frame->effect			= effect;
+		frame->clsnBlue.boxNumber	= 0;
+		frame->clsnRed.boxNumber	= 0;
+		frame->clsnUp.boxNumber		= 0;
+		frame->clsnLeft.boxNumber	= 0;
+		frame->clsnDown.boxNumber	= 0;
+		frame->clsnRight.boxNumber	= 0;
+		return GORGON_OK;
+	}
+	return GORGON_INVALID_FRAME;
 }
 /**
  * funçao para criar uma animacao
  *
  * @author: Cantídio Oliveira Fontes
  * @since: 01/05/2008
- * @final: 01/05/2008
+ * @final: 15/06/2008
  * @param: gorgonAnimation *, ponteiro para um gorgonAnimation que deseja ser criado
  * @param: short, identificador da animacao
  * @param: short, numero de frames da animacao
@@ -131,27 +131,30 @@ int gorgonCreateFrame(gorgonFrame *a, short group,short spr,short x, short y,sho
  * gorgonAnimation animation;
  *
  *  if(gorgonCreateAnimation(&animation,action,frames)!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
-int gorgonCreateAnimation(gorgonAnimation *a,short action,short frames,short looping)
+int gorgonCreateAnimation(gorgonAnimation *animation,short action,short frames,short looping)
 {
-    if(frames>0)
-    {
-        a->frame=(gorgonFrame *)calloc(frames,sizeof(gorgonFrame));
-        if(a->frame!=NULL)
-        {
-            a->action=action;
-            a->frames=frames;
-            a->frameOn=0;
-            a->timeOn=0;
-            a->looping=looping;
-            return GORGON_OK;
-        }
-        return GORGON_MEMORY_ERROR;
-    }
-    return GORGON_INVALID_VALUE;
+	if(animation!=NULL)
+	{
+		if(frames>0)
+		{
+			animation->frame=(gorgonFrame *)calloc(frames,sizeof(gorgonFrame));
+			if(animation->frame!=NULL)
+			{
+				animation->action	= action;
+				animation->frames	= frames;
+				animation->frameOn	= 0;
+				animation->timeOn	= 0;
+				animation->looping	= looping;
+				return GORGON_OK;
+			}
+			return GORGON_MEMORY_ERROR;
+		}
+		return GORGON_INVALID_INDEX;
+	}
+	return GORGON_INVALID_ANIMATION;
 }
-
 
 /**
  * função para criar um pacote de animações
@@ -167,25 +170,25 @@ int gorgonCreateAnimation(gorgonAnimation *a,short action,short frames,short loo
  * gorgonAnimationPack pack;
  * short x=10;
  * if(gorgonCreateAnimationPack(&pack,x)!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
 int gorgonCreateAnimationPack(gorgonAnimationPack *pack,short animation)
 {
 	int i;
-    if(pack!=NULL)
-    {
-        if(animation>0)
-        {
-            pack->animationNumber=animation;
-            pack->animation=(gorgonAnimation *)malloc(sizeof(gorgonAnimation)*animation);
-            for(i=0; i<animation; pack->animation[i].frames=0, i++);
-            if(pack->animation!=NULL)
-                return GORGON_OK;
-            return GORGON_MEMORY_ERROR;
-        }
-        return GORGON_INVALID_INDEX;
-    }
-    return GORGON_INVALID_ANIMATIONPACK;
+	if(pack!=NULL)
+	{
+		if(animation>0)
+		{
+			pack->animationNumber=animation;
+			pack->animation=(gorgonAnimation *)malloc(sizeof(gorgonAnimation)*animation);
+			for(i=0; i<animation; pack->animation[i].frames=0, i++);
+			if(pack->animation!=NULL)
+				return GORGON_OK;
+			return GORGON_MEMORY_ERROR;
+		}
+		return GORGON_INVALID_INDEX;
+	}
+	return GORGON_INVALID_ANIMATIONPACK;
 }
 /**
  * função para otimizar a localização dos sprites pelas animações
@@ -202,29 +205,29 @@ int gorgonCreateAnimationPack(gorgonAnimationPack *pack,short animation)
  * gorgonSpritePack sprites;
  *
  * if(gorgonMakeAnimationIndexes(&anim,&sprites)!=GORGON_OK)
- *      printf("erro");
+ *	  printf("erro");
  */
 int gorgonMakeAnimationIndexes(gorgonAnimation *anim, gorgonSpritePack *sprites)
 {
-    short i,j;
-    if(anim!=NULL)
-    {
-        if(sprites!=NULL)
-        {
-            for(i=0; i<anim->frames; i++)
-                for(j=0; j<sprites->spriteNumber; j++)
-                {
-                    if(anim->frame[i].group==sprites->sprite[j].group && anim->frame[i].spr==sprites->sprite[j].index)
-                    {
-                        anim->frame[i].index=j;
-                        break;
-                    }
-                }
-            return GORGON_OK;
-        }
-        return GORGON_INVALID_SPRITEPACK;
-    }
-    return GORGON_INVALID_ANIMATION;
+	short i,j;
+	if(anim!=NULL)
+	{
+		if(sprites!=NULL)
+		{
+			for(i=0; i<anim->frames; i++)
+				for(j=0; j<sprites->spriteNumber; j++)
+				{
+					if(anim->frame[i].group==sprites->sprite[j].group && anim->frame[i].spr==sprites->sprite[j].index)
+					{
+						anim->frame[i].index=j;
+						break;
+					}
+				}
+			return GORGON_OK;
+		}
+		return GORGON_INVALID_SPRITEPACK;
+	}
+	return GORGON_INVALID_ANIMATION;
 }
 /**
  * função para otimizar a localização dos sprites pelas animações
@@ -241,22 +244,22 @@ int gorgonMakeAnimationIndexes(gorgonAnimation *anim, gorgonSpritePack *sprites)
  * gorgonSpritePack spritePack;
  *
  * if(gorgonMakeAnimationPackIndexes(&animationPack,&spritePack)!=GORGON_OK)
- *      printf("erro");
+ *	  printf("erro");
  */
 int gorgonMakeAnimationPackIndexes(gorgonAnimationPack *animationPack,gorgonSpritePack *spritePack)
 {
-    int i;
-    int error;
-    if(animationPack!=NULL)
-    {
-        for(i=0; i<animationPack->animationNumber; i++)
-        {
-            error=gorgonMakeAnimationIndexes(&animationPack->animation[i],spritePack);
-            if(error!=GORGON_OK) return error;
-        }
-        return GORGON_OK;
-    }
-    return GORGON_INVALID_ANIMATIONPACK;
+	int i;
+	int error;
+	if(animationPack!=NULL)
+	{
+		for(i=0; i<animationPack->animationNumber; i++)
+		{
+			error=gorgonMakeAnimationIndexes(&animationPack->animation[i],spritePack);
+			if(error!=GORGON_OK) return error;
+		}
+		return GORGON_OK;
+	}
+	return GORGON_INVALID_ANIMATIONPACK;
 }
 /**
  * funçao para desenhar uma colisao
@@ -277,25 +280,25 @@ int gorgonMakeAnimationPackIndexes(gorgonAnimationPack *animationPack,gorgonSpri
  * BITMAP *layer;
  *
  *  if(gorgonDrawClsn(layer,&Clsn,CLSN_BLUE,posX,posY)!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
 int gorgonDrawClsn(BITMAP *layer, gorgonClsn *clsn,short type,short posX,short posY)
 {
-    short i;
-    int col;
-    if(clsn!=NULL)
-    {
-        switch(type)
-        {
-            case CLSN_GREEN:    col=makecol(0,255,0);       break;
-            case CLSN_BLUE:     col=makecol(0,0,255);       break;
-            case CLSN_RED:      col=makecol(255,0,0);       break;
-            default:            col=makecol(200,200,200);   break;
-        }
-        for(i=0; i<clsn->boxNumber; rect(layer,posX + clsn->x1[i],posY+ clsn->y1[i],posX+clsn->x2[i],posY+clsn->y2[i],col),i++);
-        return GORGON_OK;
-    }
-    return GORGON_INVALID_CLSN;
+	short i;
+	int col;
+	if(clsn!=NULL)
+	{
+		switch(type)
+		{
+			case CLSN_GREEN:	col=makecol(0,255,0);		break;
+			case CLSN_BLUE:	col=makecol(0,0,255);		break;
+			case CLSN_RED:		col=makecol(255,0,0);		break;
+			default:		col=makecol(200,200,200);	break;
+		}
+		for(i=0; i<clsn->boxNumber; rect(layer,posX + clsn->x1[i],posY+ clsn->y1[i],posX+clsn->x2[i],posY+clsn->y2[i],col),i++);
+		return GORGON_OK;
+	}
+	return GORGON_INVALID_CLSN;
 }
 
 /**
@@ -320,36 +323,36 @@ int gorgonDrawClsn(BITMAP *layer, gorgonClsn *clsn,short type,short posX,short p
  * short posX=10,posY=10;
  *
  * if(gorgonShowAnimation(&anim,&sprites,layer,pal,posX,posY)!=GORGON_OK)
- *      printf("erro");
+ *	  printf("erro");
  */
 int gorgonShowAnimation(gorgonAnimation *anim,gorgonSpritePack *sprites,BITMAP *layer,RGB *pal,short posX,short posY)
 {
-    short error;
-    if(anim->frame[anim->frameOn].index>(-1))
-    {
-    	error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,anim->frame[anim->frameOn].effect,posX,posY);
-        if(error!=GORGON_OK) return error;
-    }
-    else
-    {
-        error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,anim->frame[anim->frameOn].effect,posX,posY);
-        if(error!=GORGON_OK) return error;
-    }
+	short error;
+	if(anim->frame[anim->frameOn].index>(-1))
+	{
+		error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,anim->frame[anim->frameOn].effect,posX,posY);
+		if(error!=GORGON_OK) return error;
+	}
+	else
+	{
+		error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,anim->frame[anim->frameOn].effect,posX,posY);
+		if(error!=GORGON_OK) return error;
+	}
   /*  gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnBlue,  CLSN_BLUE,  posX,posY);
-    gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnRed,   CLSN_RED,   posX,posY);
-    gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnUp,    CLSN_GREEN, posX,posY);
-    gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnLeft,  CLSN_GREEN, posX,posY);
-    gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnDown,  CLSN_GREEN, posX,posY);
-    gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnRight, CLSN_GREEN, posX,posY);*/
-    anim->timeOn++;
-    if(anim->timeOn>=anim->frame[anim->frameOn].time && anim->frame[anim->frameOn].time>-1)
-    {
-        anim->frameOn++;
-        anim->timeOn=0;
-    }
-    if(anim->frameOn>=anim->frames)
-        anim->frameOn=anim->looping;
-    return GORGON_OK;
+	gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnRed,   CLSN_RED,   posX,posY);
+	gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnUp,	CLSN_GREEN, posX,posY);
+	gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnLeft,  CLSN_GREEN, posX,posY);
+	gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnDown,  CLSN_GREEN, posX,posY);
+	gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnRight, CLSN_GREEN, posX,posY);*/
+	anim->timeOn++;
+	if(anim->timeOn>=anim->frame[anim->frameOn].time && anim->frame[anim->frameOn].time>-1)
+	{
+		anim->frameOn++;
+		anim->timeOn=0;
+	}
+	if(anim->frameOn>=anim->frames)
+		anim->frameOn=anim->looping;
+	return GORGON_OK;
 }
 
 /**
@@ -399,11 +402,11 @@ int gorgonDestroyFrame(gorgonFrame *frame)
 		gorgonDestroyClsn(&frame->clsnDown);
 		gorgonDestroyClsn(&frame->clsnRight);
 		frame->group	= 0;
-		frame->spr		= 0;
+		frame->spr	= 0;
 		frame->index	= 0;
-		frame->x		= 0;
-		frame->y		= 0;
-		frame->time		= 0;
+		frame->x	= 0;
+		frame->y	= 0;
+		frame->time	= 0;
 		frame->effect	= 0;
 		frame->angle	= 0;		
 		frame->trans	= 0;	
@@ -420,6 +423,11 @@ int gorgonDestroyFrame(gorgonFrame *frame)
  * @param: 	gorgonAnimationPack *, ponteiro para uma animação
  * @return:	int gorgon_error
  * @example:
+ *
+ * gorgonAnimation animation;
+ *
+ * if(gorgonDestroyAnimation(&animation)!=GORGON_OK)
+ *	printf("erro");
  */
 int gorgonDestroyAnimation(gorgonAnimation *animation)
 {
@@ -435,7 +443,6 @@ int gorgonDestroyAnimation(gorgonAnimation *animation)
 		animation->frame=NULL;
 		return GORGON_OK;
 	}
-	
 	return GORGON_INVALID_ANIMATION;
 }
 /**
@@ -447,6 +454,10 @@ int gorgonDestroyAnimation(gorgonAnimation *animation)
  * @param: 	gorgonAnimationPack *, ponteiro para um pacote de animações a ser apagado
  * @return:	int gorgon_error
  * @example:
+ *
+ * gorgonAnimationPack animationPack;
+ * if(gorgonDestroyAnimationPack(&animationPack)!=GORGON_OK)
+ *	printf("erro");
  */
 int gorgonDestroyAnimationPack(gorgonAnimationPack *animationPack)
 {

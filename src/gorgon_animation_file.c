@@ -25,7 +25,7 @@ int gorgonSaveClsn_f(FILE *file, gorgonClsn *Clsn)
 	short i;
 	if(file!=NULL)
 	{
-		if(clsn!=NULL)
+		if(Clsn!=NULL)
 		{
 			fwrite(&Clsn->boxNumber,1,sizeof(unsigned short),file);
 			for(i=0; i<Clsn->boxNumber; i++)
@@ -73,12 +73,12 @@ int gorgonSaveFrame_f(FILE *file, gorgonFrame *frame)
 			fwrite(&frame->y,1,sizeof(short),file);
 			fwrite(&frame->time,1,sizeof(short),file);
 			fwrite(&frame->effect,1,sizeof(short),file);
-			gorgonSaveClsn_f(f,&frame->clsnRed);
-			gorgonSaveClsn_f(f,&frame->clsnBlue);
-			gorgonSaveClsn_f(f,&frame->clsnUp);
-			gorgonSaveClsn_f(f,&frame->clsnLeft);
-			gorgonSaveClsn_f(f,&frame->clsnDown);
-			gorgonSaveClsn_f(f,&frame->clsnRight);
+			gorgonSaveClsn_f(file,&frame->clsnRed);
+			gorgonSaveClsn_f(file,&frame->clsnBlue);
+			gorgonSaveClsn_f(file,&frame->clsnUp);
+			gorgonSaveClsn_f(file,&frame->clsnLeft);
+			gorgonSaveClsn_f(file,&frame->clsnDown);
+			gorgonSaveClsn_f(file,&frame->clsnRight);
 			return GORGON_OK;
 		}
 		return GORGON_INVALID_FRAME;
@@ -108,6 +108,7 @@ int gorgonSaveFrame_f(FILE *file, gorgonFrame *frame)
 int gorgonSaveAnimation_f(FILE *file, gorgonAnimation *animation)
 {
 	int i;
+	int error;
 	if(file!=NULL)
 	{
 		if(animation!=NULL)
@@ -117,7 +118,8 @@ int gorgonSaveAnimation_f(FILE *file, gorgonAnimation *animation)
 			fwrite(&animation->frames,1,sizeof(short),file);
 			for(i=0; i<animation->frames; i++)
 			{
-				gorgonSaveFrame_f(f,&animation->frame[i]);
+				error=gorgonSaveFrame_f(file,&animation->frame[i]);
+				if(error!=GORGON_OK) return error;
 			}
 			return GORGON_OK;
 		}
@@ -152,11 +154,11 @@ int gorgonSaveAnimationPack_f(FILE *file, gorgonAnimationPack *animationPack)
 	if(file!=NULL)	{
 		if(animationPack!=NULL)
 		{
-			fwrite(&header,1,sizeof(char)*55,f);
-			fwrite(&animationPack->animationNumber,1,sizeof(short),f);
+			fwrite(&header,1,sizeof(char)*55,file);
+			fwrite(&animationPack->animationNumber,1,sizeof(short),file);
 			for(i=0; i<animationPack->animationNumber; i++)
 			{
-				error=gorgonSaveAnimation_f(f,&animationPack->animation[i]);
+				error=gorgonSaveAnimation_f(file,&animationPack->animation[i]);
 				if(error!=GORGON_OK) return error;
 			}
 			return GORGON_OK;
@@ -490,7 +492,7 @@ int gorgonLoadAnimation_fm(gorgonAnimation *animation,char *data,int *ofs)
  */
 int gorgonLoadAnimationPack_fm(gorgonAnimationPack *animationPack,char *data,int *ofs)
 {
-	int		error;
+	int	error;
 	short	i;
 	short	*animationNum;
 	char	*header;
@@ -517,6 +519,124 @@ int gorgonLoadAnimationPack_fm(gorgonAnimationPack *animationPack,char *data,int
 }
 
 /**
+ * função para carregar uma gorgonClsn de um arquivo
+ *
+ * @autor: Cantídio Oliveira Fontes
+ * @since: 15/06/2008
+ * @final: 15/06/2008
+ * @param: gorgonClsn * ponteiro para a colisão a ser carregada
+ * @param: char * string com o nome do arquivo a ser aberto
+ * @return: int gorgon_error
+ * @exemple:
+ *
+ * gorgonClsn clsn;
+ * if(gorgonLoadClsn(&clsn,"animation.gcs")!=GORGON_OK)
+ *	  printf("erro!\n");
+ */
+int gorgonLoadClsn(gorgonClsn *clsn,char *filename)
+{
+	FILE	*file;
+	long	size = file_size(filename);
+	char	*data;
+	int	erro;
+	int	ofs=0;
+	if(size>0)
+	{
+		file= fopen(filename,"rb");
+		data= (char *)malloc(size);
+		if(data!=NULL)
+		{
+			fread(&(data[0]),1,size, file);
+			fclose(file);
+			erro=gorgonLoadClsn_fm(clsn,data,&ofs);
+			free(data);			
+			if(erro!=GORGON_OK) return erro;
+			return GORGON_OK;
+		}
+		return GORGON_MEMORY_ERROR;
+	}
+	return GORGON_FILE_NOT_FOUND;
+}
+/**
+ * função para carregar uma gorgonFrame de um arquivo
+ *
+ * @autor: Cantídio Oliveira Fontes
+ * @since: 15/06/2008
+ * @final: 15/06/2008
+ * @param: gorgonFrame * ponteiro para o frame a ser carregado
+ * @param: char * string com o nome do arquivo a ser aberto
+ * @return: int gorgon_error
+ * @exemple:
+ *
+ * gorgonFrame frame;
+ * if(gorgonLoadFrame(&frame,"frame.gfm")!=GORGON_OK)
+ *	  printf("erro!\n");
+ */
+int gorgonLoadFrame(gorgonFrame *frame,char *filename)
+{
+	FILE	*file;
+	long	size = file_size(filename);
+	char	*data;
+	int	erro;
+	int	ofs=0;
+	if(size>0)
+	{
+		file= fopen(filename,"rb");
+		data= (char *)malloc(size);
+		if(data!=NULL)
+		{
+			fread(&(data[0]),1,size, file);
+			fclose(file);
+			erro=gorgonLoadFrame_fm(frame,data,&ofs);
+			free(data);
+			if(erro!=GORGON_OK) return erro;
+			return GORGON_OK;
+		}
+		return GORGON_MEMORY_ERROR;
+	}
+	return GORGON_FILE_NOT_FOUND;
+}
+/**
+ * função para carregar uma gorgonAnimation de um arquivo
+ *
+ * @autor: Cantídio Oliveira Fontes
+ * @since: 15/06/2008
+ * @final: 15/06/2008
+ * @param: gorgonAnimation * ponteiro para a animação a ser carregada
+ * @param: char * string com o nome do arquivo a ser aberto
+ * @return: int gorgon_error
+ * @exemple:
+ *
+ * gorgonAnimation animation;
+ * if(gorgonLoadAnimation(&animation,"animation.gan")!=GORGON_OK)
+ *	  printf("erro!\n");
+ */
+int gorgonLoadAnimation(gorgonAnimation *animation,char *filename)
+{
+	FILE	*file;
+	long	size = file_size(filename);
+	char	*data;
+	int	erro;
+	int	ofs=0;
+	if(size>0)
+	{
+		file= fopen(filename,"rb");
+		data= (char *)malloc(size);
+		if(data!=NULL)
+		{
+			fread(&(data[0]),1,size, file);
+			fclose(file);
+			erro=gorgonLoadAnimation_fm(animation,data,&ofs);
+			free(data);			
+			if(erro!=GORGON_OK) return erro;
+			return GORGON_OK;
+		}
+		return GORGON_MEMORY_ERROR;
+	}
+	return GORGON_FILE_NOT_FOUND;
+}
+
+/**
  * função para carregar um gorgonAnimationPack de um arquivo
  *
  * @autor: Cantídio Oliveira Fontes
@@ -528,27 +648,27 @@ int gorgonLoadAnimationPack_fm(gorgonAnimationPack *animationPack,char *data,int
  * @exemple:
  *
  * gorgonAnimationPack animationPack;
- * if(gorgonLoadAnimationPackFromFile(&animationPack,"animation_exemple.bin")!=GORGON_OK)
+ * if(gorgonLoadAnimationPack(&animationPack,"animation_exemple.bin")!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonLoadAnimationPack(gorgonAnimationPack *anim,char *filename)
+int gorgonLoadAnimationPack(gorgonAnimationPack *animationPack,char *filename)
 {
-	FILE	*f;
+	FILE	*file;
 	long	size = file_size(filename);
 	char	*data;
-	int		erro;
-	int		ofs=0;
+	int	erro;
+	int	ofs=0;
 	if(size>0)
 	{
-		f	= fopen(filename,"rb");
+		file= fopen(filename,"rb");
 		data= (char *)malloc(size);
 		if(data!=NULL)
 		{
-			fread(&(data[0]),1,size, f);
-			fclose(f);
-			erro=gorgonLoadAnimationPack_fm(anim,data,&ofs);
+			fread(&(data[0]),1,size, file);
+			fclose(file);
+			erro=gorgonLoadAnimationPack_fm(animationPack,data,&ofs);
+			free(data);			
 			if(erro!=GORGON_OK) return erro;
-			free(data);
 			return GORGON_OK;
 		}
 		return GORGON_MEMORY_ERROR;

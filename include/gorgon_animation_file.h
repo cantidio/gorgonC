@@ -15,20 +15,19 @@ int gorgonSaveFrame_f(FILE *f, gorgonFrame *frame);
 int gorgonSaveAnimation_f(FILE *f, gorgonAnimation *animation);
 int gorgonSaveAnimationPack_f(FILE *f, gorgonAnimationPack *animationPack);
 
-
 int gorgonSaveClsn(char *filename, gorgonClsn *Clsn);
 int gorgonSaveFrame(char *filename, gorgonFrame *frame);
 int gorgonSaveAnimation(char *filename, gorgonAnimation *animation);
 int gorgonSaveAnimationPack(char *filename, gorgonAnimationPack *animationPack);
 
-
-
 int gorgonLoadClsn_fm(gorgonClsn *clsn,char *data,int *ofs);
 int gorgonLoadFrame_fm(gorgonFrame *frame,char *data,int *ofs);
 int gorgonLoadAnimation_fm(gorgonAnimation *animation,char *data,int *ofs);
-
 int gorgonLoadAnimationPack_fm(gorgonAnimationPack *animationPack,char *data,int *ofs);
-int gorgonLoadAnimationPack(gorgonAnimationPack *anim,char *filename);
 
+int gorgonLoadClsn(gorgonClsn *clsn,char *filename);
+int gorgonLoadFrame(gorgonFrame *frame,char *filename);
+int gorgonLoadAnimation(gorgonAnimation *animation,char *filename);
+int gorgonLoadAnimationPack(gorgonAnimationPack *animationPack,char *filename);
 
 #endif

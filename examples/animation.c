@@ -20,10 +20,10 @@ void init()
 	set_color_depth(depth);
 
 	if(set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0))
-    {
-        if (set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0))
-        	exit(1);
-    }
+	{
+		if (set_gfx_mode(GFX_AUTODETECT, 320, 240, 0, 0))
+			exit(1);
+	}
 }
 
 void denit()
@@ -37,7 +37,7 @@ int main()
 	gorgonAnimationPack animationPack;
 	init();
 	if(gorgonCreateAnimationPack(&animationPack,1)!=GORGON_OK)				return 1;
-	if(gorgonCreateAnimation(&animationPack.animation[0],0,4,0)!=GORGON_OK)		return 1;
+	if(gorgonCreateAnimation(&animationPack.animation[0],0,4,0)!=GORGON_OK)			return 1;
 	if(gorgonCreateFrame(&animationPack.animation[0].frame[0],0,0,0,0,10,0)!=GORGON_OK)	return 1;
 	if(gorgonCreateFrame(&animationPack.animation[0].frame[1],0,1,0,0,10,0)!=GORGON_OK)	return 1;
 	if(gorgonCreateFrame(&animationPack.animation[0].frame[2],0,2,0,0,10,0)!=GORGON_OK)	return 1;

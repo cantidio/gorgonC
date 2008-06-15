@@ -13,16 +13,26 @@
 #include <allegro.h>
 #include "gorgon_error.h"
 
+int gorgonSavePalette_f(FILE *f,RGB *palette);
+int gorgonSavePalette16_f(FILE *file,RGB *palette);
+
+int gorgonSavePalette(char *filename,RGB *palette);
+int gorgonSavePalette16(char *filename,RGB *palette);
+
 int gorgonLoadPalette_fm(RGB **pal,char *data,int *ofs);
-int gorgonLoadPaletteFromMemory(char *data,RGB **pal);
-int gorgonLoadInversedPaletteFromMemory(char *data,RGB **pal);
-int gorgonUnloadPalette(RGB **pal);
-int gorgonLoadPaletteFromFile(char *filename,RGB **pal);
-int gorgonDrawPalette(RGB *pal,BITMAP *layer);
-int gorgonSavePaletteInFile(RGB *pal,char *filename);
-int gorgonSavePalette(RGB *pal,FILE *f);
-int gorgonSavePalette16(RGB *pal,FILE *f);
-int copyPalette(RGB **a, RGB *b);
-void gorgonCreatePaletteFromImage(BITMAP *a, RGB *pal,int r,int g,int b);
+int gorgonLoadPalette(RGB **pal,char *filename);
+
+int gorgonDestroyPalette(RGB **palette);
+int gorgonCopyPalette(RGB **palette1, RGB *palette2);
+
+
+//
+
+int gorgonDrawPalette(BITMAP *layer,RGB *pal);
+
+
+
+
+void gorgonCreatePaletteFromImage(RGB *palette,BITMAP *a,int r,int g,int b);
 #endif
 

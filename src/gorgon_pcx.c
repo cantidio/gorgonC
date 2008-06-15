@@ -54,7 +54,7 @@ int gorgonLoadPcxFromMemory(BITMAP **image,char *data,int *ofs)
 		bytesPerLine		= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
 		paletteType		= (short*)&data[*ofs];	(*ofs)+=sizeof(short);
 		filler			= (char *)&data[*ofs];	(*ofs)+=58*sizeof(char);//informação inutil...
-printf("bitsPerPixel: %d\n",*bitsPerPixel);
+
 		if(*bitsPerPixel==8)
 		{
 			short w=*xEnd-*xStart+1;
@@ -107,7 +107,7 @@ printf("bitsPerPixel: %d\n",*bitsPerPixel);
  * @return	: int gorgon_error
  * @example	:
  */
-int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
+int gorgonSavePcx_f(FILE *file,BITMAP *image,RGB *pal)
 {
 	char	pixel;
 	char	savePixel;
@@ -132,7 +132,7 @@ int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
 	short	paletteType	= 1;
   	char	filler[58];
 	
-	if(f!=NULL)
+	if(file!=NULL)
 	{
 		if(image!=NULL)
 		{
@@ -145,24 +145,24 @@ int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
 		  	bitPlanes	= (depth==8) ? 1 : 3;
 		  	bytesPerLine	= image->w;
 
-			fwrite(&identifier,1,sizeof(char),f);
-			fwrite(&version,1,sizeof(char),f);
-			fwrite(&encoding,1,sizeof(char),f);
-			fwrite(&bitsPerPixel,1,sizeof(char),f);
+			fwrite(&identifier,1,sizeof(char),file);
+			fwrite(&version,1,sizeof(char),file);
+			fwrite(&encoding,1,sizeof(char),file);
+			fwrite(&bitsPerPixel,1,sizeof(char),file);
 			
-			fwrite(&xStart,1,sizeof(short),f);
-			fwrite(&yStart,1,sizeof(short),f);
-			fwrite(&xEnd,1,sizeof(short),f);
-			fwrite(&yEnd,1,sizeof(short),f);
-			fwrite(&hRes,1,sizeof(short),f);
-			fwrite(&vRes,1,sizeof(short),f);
-			gorgonSavePalette16(pal,f);
+			fwrite(&xStart,1,sizeof(short),file);
+			fwrite(&yStart,1,sizeof(short),file);
+			fwrite(&xEnd,1,sizeof(short),file);
+			fwrite(&yEnd,1,sizeof(short),file);
+			fwrite(&hRes,1,sizeof(short),file);
+			fwrite(&vRes,1,sizeof(short),file);
+			gorgonSavePalette16_f(file,pal);
 
-			fwrite(&reserved,1,sizeof(char),f);
-			fwrite(&bitPlanes,1,sizeof(char),f);
-			fwrite(&bytesPerLine,1,sizeof(short),f);
-			fwrite(&paletteType,1,sizeof(short),f);
-			fwrite(&filler,1,sizeof(char)*58,f);
+			fwrite(&reserved,1,sizeof(char),file);
+			fwrite(&bitPlanes,1,sizeof(char),file);
+			fwrite(&bytesPerLine,1,sizeof(short),file);
+			fwrite(&paletteType,1,sizeof(short),file);
+			fwrite(&filler,1,sizeof(char)*58,file);
 			
 			for (y=0; y<image->h; y++)
 			{
@@ -202,9 +202,9 @@ int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
 							if ((count > 1) || ((savePixel & 0xC0) == 0xC0))
 							{
 								count=(0xC0 | count);
-								fwrite(&count,1,sizeof(char),f);
+								fwrite(&count,1,sizeof(char),file);
 							}
-							fwrite(&savePixel,1,sizeof(char),f);
+							fwrite(&savePixel,1,sizeof(char),file);
 							count 		= 1;
 							savePixel 	= pixel;
 						}
@@ -214,15 +214,15 @@ int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal)
 				if ((count > 1) || ((savePixel & 0xC0) == 0xC0))
 				{
 					count=(0xC0 | count);
-					fwrite(&count,1,sizeof(char),f);
+					fwrite(&count,1,sizeof(char),file);
 				}
-				fwrite(&savePixel,1,sizeof(char),f);
+				fwrite(&savePixel,1,sizeof(char),file);
 			}
 			if(depth==8 && pal!=NULL)
 			{
 				pixel=12;
-				fwrite(&pixel,1,sizeof(char),f);
-				gorgonSavePalette(pal,f);
+				fwrite(&pixel,1,sizeof(char),file);
+				gorgonSavePalette_f(file,pal);
 			}
 			return GORGON_OK;
 		}

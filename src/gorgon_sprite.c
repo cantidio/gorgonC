@@ -8,38 +8,44 @@
  * @final: 11/06/2008
  * @param: gorgonSpritePack *, ponteiro para uma gorgonSpritePack
  * @param: SFFEntry, ponteiro para um arquivo sff
- * @exemple:
+ * @example:
  *
  * gorgonSff sff;
  * gorgonSpritePack spritePack;
  *
  *  if(gorgonConvertSffToSpritePack(&spritePack,&sff)!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
 int gorgonConvertSffToSpritePack(gorgonSpritePack *spritePack, gorgonSff *sff)
 {
 	int i;
+	int error;
 	if(spritePack!=NULL)
-    {
-        if(sff!=NULL)
-        {
-            spritePack->spriteNumber=sff->spriteNum;
-            spritePack->sprite=(gorgonSprite *)malloc(sizeof(gorgonSprite)*spritePack->spriteNumber);
-            for(i=0; i<spritePack->spriteNumber; i++)
-            {
-                spritePack->sprite[i].image	=create_bitmap_ex(8,sff->sprite[i].image->w,sff->sprite[i].image->h);
-                blit(sff->sprite[i].image,spritePack->sprite[i].image,0,0,0,0,sff->sprite[i].image->w,sff->sprite[i].image->h);
-                spritePack->sprite[i].x     =sff->sprite[i].x;
-                spritePack->sprite[i].y     =sff->sprite[i].y;
-                spritePack->sprite[i].group =sff->sprite[i].group;
-                spritePack->sprite[i].index =sff->sprite[i].index;
-                copyPalette(&spritePack->sprite[i].pal,sff->sprite[i].pal);
-            }
-            return GORGON_OK;
-        }
-        return GORGON_INVALID_SFF;
-    }
-    return GORGON_INVALID_SPRITEPACK;
+	{
+		if(sff!=NULL)
+		{
+			spritePack->spriteNumber=sff->spriteNum;
+			spritePack->sprite=(gorgonSprite *)malloc(sizeof(gorgonSprite)*spritePack->spriteNumber);
+			if(spritePack->sprite!=NULL)
+			{
+				for(i=0; i<spritePack->spriteNumber; i++)
+				{
+					spritePack->sprite[i].image	=create_bitmap_ex(8,sff->sprite[i].image->w,sff->sprite[i].image->h);
+					blit(sff->sprite[i].image,spritePack->sprite[i].image,0,0,0,0,sff->sprite[i].image->w,sff->sprite[i].image->h);
+					spritePack->sprite[i].x		=sff->sprite[i].x;
+					spritePack->sprite[i].y		=sff->sprite[i].y;
+					spritePack->sprite[i].group	=sff->sprite[i].group;
+					spritePack->sprite[i].index	=sff->sprite[i].index;
+					error=gorgonCopyPalette(&spritePack->sprite[i].pal,sff->sprite[i].pal);
+					if(error!=GORGON_OK) return error;
+				}
+				return GORGON_OK;
+			}
+			return GORGON_MEMORY_ERROR;
+		}
+		return GORGON_INVALID_SFF;
+   	}
+	return GORGON_INVALID_SPRITEPACK;
 }
 /**
  * funçao para carregar um srquivo sff em um spritePack
@@ -50,12 +56,12 @@ int gorgonConvertSffToSpritePack(gorgonSpritePack *spritePack, gorgonSff *sff)
  * @param: gorgonSpritePack *, ponteiro para uma gorgonSpritePack
  * @param: char *, nome do arquivo a ser aberto
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * gorgonSpritePack spritePack;
  *
  *  if(gorgonLoadSpritePackFromSff(&spritePack,"teste.sff")!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
 int gorgonLoadSpritePackFromSff(gorgonSpritePack *spritePack,char *filename)
 {
@@ -77,7 +83,7 @@ int gorgonLoadSpritePackFromSff(gorgonSpritePack *spritePack,char *filename)
  * @final: 27/05/2008
  * @param: gorgonSprite *, apontador para um gorgonSprite, cujos dados serão desalocados
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * gorgonSprite sprite;
  *
@@ -88,8 +94,8 @@ int gorgonDestroySprite(gorgonSprite *sprite)
 {
 	if(sprite!=NULL)
 	{
-		if(sprite->image!=NULL)	destroy_bitmap(sprite->image);
-		return gorgonUnloadPalette(&sprite->pal);
+		if(sprite->image!=NULL) destroy_bitmap(sprite->image);
+		return gorgonDestroyPalette(&sprite->pal);
 	}
 	return GORGON_INVALID_SPRITE;
 }
@@ -101,12 +107,12 @@ int gorgonDestroySprite(gorgonSprite *sprite)
  * @final: 27/05/2008
  * @param: gorgonSpritePack *, apontador para um gorgonSpritePack, cujos dados serão desalocados
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * gorgonSpritePack spritePack;
  *
  * if(gorgonUnloadSpritePack(&spritePack)!=GORGON_OK)
- *		printf("erro\n");
+ *	Sprintf("erro\n");
  */
 int gorgonDestroySpritePack(gorgonSpritePack *spritePack)
 {
@@ -138,7 +144,7 @@ int gorgonDestroySpritePack(gorgonSpritePack *spritePack)
  * @param: short, posição x que será desenhado na superfície
  * @param: short, posição y que será desenhado na superfície
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * short index=0,posX=10,posY=23;
  * BITMAP *buffer;
@@ -146,57 +152,57 @@ int gorgonDestroySpritePack(gorgonSpritePack *spritePack)
  * gorgonSpritePack a;
  *
  *  if(gorgonDrawSpriteByIndex(&a,buffer,pal,index,NORMAL,posX,posY)!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
 int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,short type,short posX,short posY)
 {
-    RGB trans = { 63 , 0 , 63 };
-    BITMAP *sprite;
-    if(index<a->spriteNumber)
-    {
-        if(&a->sprite[index]!=NULL)
-        {
-            if(a->sprite[index].image!=NULL && layer!=NULL)
-            {
-                sprite=create_bitmap(a->sprite[index].image->w,a->sprite[index].image->h);
-                if(pal!=NULL)
-                    set_palette(pal);
-                else if(a->sprite[index].pal!=NULL)
-                    set_palette(a->sprite[index].pal);
+	RGB trans = { 63 , 0 , 63 };
+	BITMAP *sprite;
+	if(index<a->spriteNumber)
+	{
+		if(&a->sprite[index]!=NULL)
+		{
+			if(a->sprite[index].image!=NULL && layer!=NULL)
+			{
+				sprite=create_bitmap(a->sprite[index].image->w,a->sprite[index].image->h);
+				if(pal!=NULL)
+					set_palette(pal);
+				else if(a->sprite[index].pal!=NULL)
+					set_palette(a->sprite[index].pal);
 				//set_color(0,&trans);
 				//set_color_conversion(COLORCONV_NONE);
 				blit(a->sprite[index].image,sprite,0,0,0,0,sprite->w,sprite->h);
-                switch(type)
-                {
-                    case NORMAL:
-                        posX-=a->sprite[index].x;
-                        posY-=a->sprite[index].y;
-                        draw_sprite(layer,sprite,posX,posY);
-                        break;
-                    case H_FLIP:
-                        posX-=a->sprite[index].image->w - a->sprite[index].x;
-                        posY-=a->sprite[index].y;
-                        draw_sprite_h_flip(layer,sprite,posX,posY);
-                        break;
-                    case V_FLIP:
-                        posX-=a->sprite[index].x;
-                        posY-=a->sprite[index].image->h - a->sprite[index].y;
-                        draw_sprite_v_flip(layer,sprite,posX,posY);
-                        break;
-                    case HV_FLIP:
-                        posX-=a->sprite[index].image->w - a->sprite[index].x;
-                        posY-=a->sprite[index].image->h - a->sprite[index].y;
-                        draw_sprite_vh_flip(layer,sprite,posX,posY);
-                        break;
-                }
-                destroy_bitmap(sprite);
-                return GORGON_OK;
-            }
-            return GORGON_INVALID_IMAGE;
-        }
-        return GORGON_INVALID_SPRITE;
-    }
-    return GORGON_INVALID_INDEX;
+				switch(type)
+				{
+					case NORMAL:
+						posX-=a->sprite[index].x;
+						posY-=a->sprite[index].y;
+						draw_sprite(layer,sprite,posX,posY);
+						break;
+					case H_FLIP:
+						posX-=a->sprite[index].image->w - a->sprite[index].x;
+						posY-=a->sprite[index].y;
+						draw_sprite_h_flip(layer,sprite,posX,posY);
+						break;
+					case V_FLIP:
+						posX-=a->sprite[index].x;
+						posY-=a->sprite[index].image->h - a->sprite[index].y;
+						draw_sprite_v_flip(layer,sprite,posX,posY);
+						break;
+					case HV_FLIP:
+						posX-=a->sprite[index].image->w - a->sprite[index].x;
+						posY-=a->sprite[index].image->h - a->sprite[index].y;
+						draw_sprite_vh_flip(layer,sprite,posX,posY);
+						break;
+				}
+				destroy_bitmap(sprite);
+				return GORGON_OK;
+			}
+			return GORGON_INVALID_IMAGE;
+		}
+		return GORGON_INVALID_SPRITE;
+	}
+	return GORGON_INVALID_INDEX;
 }
 /**
  * funçao para desenhar um sprite de um spritePack através de um index, em um determinado ângulo
@@ -213,7 +219,7 @@ int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short ind
  * @param: short, posição x que será desenhado na superfície
  * @param: short, posição y que será desenhado na superfície
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * short index=0,posX=10,posY=23;
  * BITMAP *buffer;
@@ -221,52 +227,48 @@ int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short ind
  * gorgonSpritePack a;
  *
  *  if(gorgonDrawRotatedSpriteByIndex(&a,buffer,pal,index,NORMAL,60,posX,posY)!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
 int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,short type,short angle, short posX,short posY)
 {
-    RGB trans = { 63 , 0 , 63 };
-    BITMAP *sprite;
-    if(index<a->spriteNumber)
-    {
-        if(&a->sprite[index]!=NULL)
-        {
-            if(a->sprite[index].image!=NULL && layer!=NULL)
-            {
-                sprite=create_bitmap(a->sprite[index].image->w,a->sprite[index].image->h);
-                if(pal!=NULL)
-                    set_palette(pal);
-                else if(a->sprite[index].pal!=NULL)
-                    set_palette(a->sprite[index].pal);
-                //set_color(0,&trans);
-                //set_color_conversion(COLORCONV_NONE);
-                blit(a->sprite[index].image,sprite,0,0,0,0,sprite->w,sprite->h);
-                switch(type)
-                {
-                    case NORMAL:
+	RGB trans = { 63 , 0 , 63 };
+	BITMAP *sprite;
+	if(index<a->spriteNumber)
+	{
+		if(&a->sprite[index]!=NULL)
+		{
+			if(a->sprite[index].image!=NULL && layer!=NULL)
+			{
+				sprite=create_bitmap(a->sprite[index].image->w,a->sprite[index].image->h);
+				if(pal!=NULL)
+					set_palette(pal);
+				else if(a->sprite[index].pal!=NULL)
+					set_palette(a->sprite[index].pal);
+							   	blit(a->sprite[index].image,sprite,0,0,0,0,sprite->w,sprite->h);
+				switch(type)
+				{
+					case NORMAL:
 						pivot_sprite(layer,sprite,posX,posY,a->sprite[index].x,a->sprite[index].y, itofix(angle));
-                        break;
-                    case H_FLIP:
-                        pivot_sprite_v_flip(layer,sprite,posX,posY,a->sprite[index].x, a->sprite[index].image->h - a->sprite[index].y, itofix(angle+128));
-                        break;
-                    case V_FLIP:
-                        pivot_sprite_v_flip(layer,sprite,posX,posY,a->sprite[index].x, a->sprite[index].image->h - a->sprite[index].y, itofix(angle));
-                        break;
-                    case HV_FLIP:
-						pivot_sprite(layer,sprite,posX,posY,a->sprite[index].x,a->sprite[index].y, itofix(angle+128));
-                        break;
-                }
-                destroy_bitmap(sprite);
-                return GORGON_OK;
-            }
-            return GORGON_INVALID_IMAGE;
-        }
-        return GORGON_INVALID_SPRITE;
-    }
-    return GORGON_INVALID_INDEX;
+						break;
+					case H_FLIP:
+						pivot_sprite_v_flip(layer,sprite,posX,posY,a->sprite[index].x, a->sprite[index].image->h - a->sprite[index].y, itofix(angle+128));
+						break;
+					case V_FLIP:
+						pivot_sprite_v_flip(layer,sprite,posX,posY,a->sprite[index].x, a->sprite[index].image->h - a->sprite[index].y, itofix(angle));
+						break;
+					case HV_FLIP:						pivot_sprite(layer,sprite,posX,posY,a->sprite[index].x,a->sprite[index].y, itofix(angle+128));
+						break;
+				}
+				destroy_bitmap(sprite);
+				return GORGON_OK;
+			}
+			return GORGON_INVALID_IMAGE;
+		}
+		return GORGON_INVALID_SPRITE;
+	}
+	return GORGON_INVALID_INDEX;
 }
 
-//---------------
 /**
  * funçao para desenhar um sprite de um spritePack através de um index
  *
@@ -281,7 +283,7 @@ int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,sh
  * @param: short, posição x que será desenhado na superfície
  * @param: short, posição y que será desenhado na superfície
  * @return: int gorgon_erro
- * @exemple:
+ * @example:
  *
  * short index=0,posX=10,posY=23;
  * BITMAP *buffer;
@@ -289,58 +291,58 @@ int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,sh
  * gorgonSpritePack a;
  *
  *  if(gorgonDrawSpriteByIndex(&a,buffer,pal,NORMAL,index,posX,posY)!=GORGON_OK)
- *      printf("erro\n");
+ *	  printf("erro\n");
  */
 int gorgonDrawSpriteByGroup(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short group,short spr,short type,short posX,short posY)
 {
-    RGB trans = { 63 , 0 , 63 };
-    short i;
-    BITMAP *sprite;
-    if(a!=NULL)
-    {
-        if(layer!=NULL)
-        {
-            for(i=0; (i<a->spriteNumber) && (a->sprite[i].group!=group || a->sprite[i].index!=spr); i++);
+	RGB trans = { 63 , 0 , 63 };
+	short i;
+	BITMAP *sprite;
+	if(a!=NULL)
+	{
+		if(layer!=NULL)
+		{
+			for(i=0; (i<a->spriteNumber) && (a->sprite[i].group!=group || a->sprite[i].index!=spr); i++);
 
-            if(i<a->spriteNumber)
-            {
-                sprite=create_bitmap(a->sprite[i].image->w,a->sprite[i].image->h);
-                if(pal!=NULL)
-                    set_palette(pal);
-                else if(a->sprite[i].pal!=NULL)
-                    set_palette(a->sprite[i].pal);
-                blit(a->sprite[i].image,sprite,0,0,0,0,sprite->w,sprite->h);
-                switch(type)
-                {
-                    case NORMAL:
-                        posX-=a->sprite[i].x;
-                        posY-=a->sprite[i].y;
-                        draw_sprite(layer,sprite,posX,posY);
-                        break;
-                    case H_FLIP:
-                        posX-=a->sprite[i].image->w - a->sprite[i].x;
-                        posY-=a->sprite[i].y;
-                        draw_sprite_h_flip(layer,sprite,posX,posY);
-                        break;
-                    case V_FLIP:
-                        posX-=a->sprite[i].x;
-                        posY-=a->sprite[i].image->h - a->sprite[i].y;
-                        draw_sprite_v_flip(layer,sprite,posX,posY);
-                        break;
-                    case HV_FLIP:
-                        posX-=a->sprite[i].image->w - a->sprite[i].x;
-                        posY-=a->sprite[i].image->h - a->sprite[i].y;
-                        draw_sprite_vh_flip(layer,sprite,posX,posY);
-                        break;
-                }
-                destroy_bitmap(sprite);
-                return GORGON_OK;
-            }
-            return GORGON_INVALID_INDEX;
-        }
-        return GORGON_INVALID_IMAGE;
-    }
-    return GORGON_INVALID_SPRITEPACK;
+			if(i<a->spriteNumber)
+			{
+				sprite=create_bitmap(a->sprite[i].image->w,a->sprite[i].image->h);
+				if(pal!=NULL)
+					set_palette(pal);
+				else if(a->sprite[i].pal!=NULL)
+					set_palette(a->sprite[i].pal);
+				blit(a->sprite[i].image,sprite,0,0,0,0,sprite->w,sprite->h);
+				switch(type)
+				{
+					case NORMAL:
+						posX-=a->sprite[i].x;
+						posY-=a->sprite[i].y;
+						draw_sprite(layer,sprite,posX,posY);
+						break;
+					case H_FLIP:
+						posX-=a->sprite[i].image->w - a->sprite[i].x;
+						posY-=a->sprite[i].y;
+						draw_sprite_h_flip(layer,sprite,posX,posY);
+						break;
+					case V_FLIP:
+						posX-=a->sprite[i].x;
+						posY-=a->sprite[i].image->h - a->sprite[i].y;
+						draw_sprite_v_flip(layer,sprite,posX,posY);
+						break;
+					case HV_FLIP:
+						posX-=a->sprite[i].image->w - a->sprite[i].x;
+						posY-=a->sprite[i].image->h - a->sprite[i].y;
+						draw_sprite_vh_flip(layer,sprite,posX,posY);
+						break;
+				}
+				destroy_bitmap(sprite);
+				return GORGON_OK;
+			}
+			return GORGON_INVALID_INDEX;
+		}
+		return GORGON_INVALID_IMAGE;
+	}
+	return GORGON_INVALID_SPRITEPACK;
 }
 
 
