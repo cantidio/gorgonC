@@ -491,13 +491,14 @@ void gorgonPrintAnimationPackValues(gorgonAnimationPack *pk)
 	for(i=0; i<pk->animationNumber; i++)
 	{
 		printf("animacao: %d\n",i+1);
+		printf("action:%d\n",pk->animation[i].action);
 		printf("Numero de frames:%d\n",pk->animation[i].frames);
 		printf("looping: %d\n",pk->animation[i].looping);
 		printf("time: %d\n",pk->animation[i].timeOn);
 		
 		for(j=0; j<pk->animation[i].frames; j++)
 		{
-			printf("frame %d:\naction:%d\n",j+1);
+			printf("frame %d:\n",j+1);
 			printf("grupo: %d\n",pk->animation[i].frame[j].group);
 			printf("spr: %d\n",pk->animation[i].frame[j].spr);
 			printf("index: %d\n",pk->animation[i].frame[j].index);

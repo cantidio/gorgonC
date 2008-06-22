@@ -333,24 +333,16 @@ int gorgonLoadClsn_fm(gorgonClsn *clsn,char *data,int *ofs)
 	int error;
 	if(data!=NULL)
 	{
-		clsnNumber=(unsigned short *) &data[*ofs];
-		(*ofs)+=sizeof(unsigned short);
+		clsnNumber=(unsigned short *)&data[*ofs]; (*ofs)+=sizeof(unsigned short);
 		gorgonCreateClsn(clsn,*clsnNumber);
-		if(clsnNumber>0)
+		for(i=0; i<*clsnNumber; i++)
 		{
-			for(i=0; i<*clsnNumber; i++)
-			{
-				x1=(short *) &data[*ofs];
-				(*ofs)+=sizeof(short);
-				y1=(short *) &data[*ofs];
-				(*ofs)+=sizeof(short);
-				x2=(short *) &data[*ofs];
-				(*ofs)+=sizeof(short);
-				y2=(short *) &data[*ofs];
-				(*ofs)+=sizeof(short);
-				error=gorgonSetClsnValues(clsn,i,*x1,*x2,*y1,*y2);
-				if(error!=GORGON_OK) return error;
-			}
+			x1=(short *) &data[*ofs];	(*ofs)+=sizeof(short);
+			y1=(short *) &data[*ofs];	(*ofs)+=sizeof(short);
+			x2=(short *) &data[*ofs];	(*ofs)+=sizeof(short);
+			y2=(short *) &data[*ofs];	(*ofs)+=sizeof(short);
+			error=gorgonSetClsnValues(clsn,i,*x1,*x2,*y1,*y2);
+			if(error!=GORGON_OK) return error;
 		}
 		return GORGON_OK;
 	}
@@ -388,20 +380,12 @@ int gorgonLoadFrame_fm(gorgonFrame *frame,char *data,int *ofs)
 	{
 		if(frame!=NULL)
 		{
-			group=(short *) &data[*ofs];
-			(*ofs)+=sizeof(short);
-			spr=(short *) &data[*ofs];
-			(*ofs)+=sizeof(short);
-			/*index=(short *) &data[*ofs];
-			(*ofs)+=sizeof(short);*/
-			x=(short *) &data[*ofs];
-			(*ofs)+=sizeof(short);
-			y=(short *) &data[*ofs];
-			(*ofs)+=sizeof(short);
-			time=(short *) &data[*ofs];
-			(*ofs)+=sizeof(short);
-			effect=(short *) &data[*ofs];
-			(*ofs)+=sizeof(short);
+			group	=(short *) &data[*ofs];	(*ofs)+=sizeof(short);
+			spr	=(short *) &data[*ofs];	(*ofs)+=sizeof(short);
+			x	=(short *) &data[*ofs];	(*ofs)+=sizeof(short);
+			y	=(short *) &data[*ofs];	(*ofs)+=sizeof(short);
+			time	=(short *) &data[*ofs];	(*ofs)+=sizeof(short);
+			effect	=(short *) &data[*ofs];	(*ofs)+=sizeof(short);
 
 			error=gorgonCreateFrame(frame,*group,*spr,*x,*y,*time,*effect);
 			if(error!=GORGON_OK) return error;
@@ -453,12 +437,9 @@ int gorgonLoadAnimation_fm(gorgonAnimation *animation,char *data,int *ofs)
 	{
 		if(animation!=NULL)
 		{
-			action=(short*)&data[*ofs];
-			(*ofs)+=sizeof(short);
-			looping=(short*)&data[*ofs];
-			(*ofs)+=sizeof(short);
-			frames=(short*)&data[*ofs];
-			(*ofs)+=sizeof(short);
+			action	=(short*)&data[*ofs];	(*ofs)+=sizeof(short);
+			looping	=(short*)&data[*ofs];	(*ofs)+=sizeof(short);
+			frames	=(short*)&data[*ofs];	(*ofs)+=sizeof(short);
 			error=gorgonCreateAnimation(animation,*action,*frames,*looping);
 			if(error!=GORGON_OK) return error;
 			for(i=0; i<*frames; i++)

@@ -36,7 +36,10 @@ int gorgonConvertSffToSpritePack(gorgonSpritePack *spritePack, gorgonSff *sff)
 					spritePack->sprite[i].y		=sff->sprite[i].y;
 					spritePack->sprite[i].group	=sff->sprite[i].group;
 					spritePack->sprite[i].index	=sff->sprite[i].index;
+//					gorgonSavePalette("1.act",sff->sprite[i].pal);
 					error=gorgonCopyPalette(&spritePack->sprite[i].pal,sff->sprite[i].pal);
+//					gorgonSavePalette("2.act",spritePack->sprite[i].pal);
+//exit(1);
 					if(error!=GORGON_OK)	return error;
 				}
 				return GORGON_OK;
@@ -244,7 +247,7 @@ int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,sh
 					set_palette(pal);
 				else if(a->sprite[index].pal!=NULL)
 					set_palette(a->sprite[index].pal);
-							   	blit(a->sprite[index].image,sprite,0,0,0,0,sprite->w,sprite->h);
+				blit(a->sprite[index].image,sprite,0,0,0,0,sprite->w,sprite->h);
 				switch(type)
 				{
 					case NORMAL:

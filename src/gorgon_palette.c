@@ -5,7 +5,7 @@
  *
  * @autor: Cantidio Oliveira Fontes
  * @since: 30/04/2008
- * @final: 15/06/2008
+ * @final: 20/06/2008
  * @param: RGB * apontador para a palheta de cores
  * @param: char * string com o nome do arquivo a ser salvo
  * @return: int gorgon_error
@@ -23,7 +23,7 @@ int gorgonSavePalette_f(FILE *file,RGB *palette)
 	char b;
 	if(palette!=NULL)
 	{
-		for(i=0; i<256; i++)
+		for(i=255; i>=0; i--)
 		{
 			r=((palette[i].r*255)/63);
 			g=((palette[i].g*255)/63);
@@ -138,7 +138,7 @@ int gorgonSavePalette16(char *filename,RGB *palette)
 }
 
 /**
- * funcao para carregar uma palheta de cores direto da memória
+ * funcao para carregar uma palheta de cores direto da memï¿½ria
  *
  * @autor: Cantidio Oliveira Fontes
  * @since: 29/04/2008
@@ -161,7 +161,7 @@ int gorgonLoadPalette_fm(RGB **palette,char *data,int *ofs)
 	*palette=(RGB*)calloc(256,sizeof(RGB));
 	if(*palette!=NULL)
 	{
-		for(i=0; i<256; i++)
+		for(i=255; i>=0; i--)
 		{
 			r = (unsigned char*)&data[*ofs];	(*ofs)+=sizeof(unsigned char);
 			g = (unsigned char*)&data[*ofs];	(*ofs)+=sizeof(unsigned char);	
@@ -216,7 +216,7 @@ int gorgonLoadPalette(RGB **palette,char *filename)
 }
 
 /**
- * funcao para descarregar uma palheta de cores da memória
+ * funcao para descarregar uma palheta de cores da memï¿½ria
  *
  * @autor: Cantidio Oliveira Fontes
  * @since: 29/04/2008
@@ -248,7 +248,7 @@ int gorgonDestroyPalette(RGB **palette)
  * @since: 29/04/2008
  * @final: 30/04/2008
  * @param: RGB * apontador para a palheta de cores
- * @param: BITMAP * apontador para um bitmap, o qual a palheta será desenhada
+ * @param: BITMAP * apontador para um bitmap, o qual a palheta serï¿½ desenhada
  * @return: int gorgon_error
  * @example:
  *
@@ -283,8 +283,8 @@ int gorgonDrawPalette(BITMAP *layer,RGB *palette)
  * @autor: Cantidio Oliveira Fontes
  * @since: 29/04/2008
  * @final: 15/06/2008
- * @param: RGB ** apontador para a palheta de cores que receberá os valores da segunda
- * @param: RGB * paleta de cores que irá ser a base
+ * @param: RGB ** apontador para a palheta de cores que receberï¿½ os valores da segunda
+ * @param: RGB * paleta de cores que irï¿½ ser a base
  * @return: int gorgon_error
  * @example:
  *
@@ -314,11 +314,11 @@ int gorgonCopyPalette(RGB **palette1, RGB *palette2)
 	return GORGON_INVALID_PALETTE;
 }
 /**
- * função para criar uma palheta de 256 cores a partir de uma imagem qualquer
+ * funï¿½ï¿½o para criar uma palheta de 256 cores a partir de uma imagem qualquer
  *
- * @author: Cantídio Oliveira Fontes
+ * @author: Cantï¿½dio Oliveira Fontes
  * @since: 07/05/2008
- * @final: 08/05/2008
+ * @final: 20/06/2008
  * @param: BITMAP *, ponteiro para a imagem
  * @param: RGB *, ponteiro para a palheta de cores
  * @param: int, R
@@ -339,9 +339,9 @@ int gorgonCreatePaletteFromImage(RGB *palette,BITMAP *image,int r,int g,int b)
 	if(image!=NULL)
 	{
 		for(z=0; z<256; palette[z].r=r,palette[z].g=g,palette[z].b=b,z++);
-		for(x=0; x<image->w; x++)
+		for(y=0; y<image->h; y++)
 		{
-			for(y=0; y<image->h; y++)
+			for(x=0; x<image->w; x++)	
 			{
 				color=_getpixel32(image,x,y);
 				if(color!=trans)
