@@ -82,9 +82,16 @@ GORGON_BACKGROUND_FILE: ./include/gorgon_background_file.h ./src/gorgon_backgrou
 	mv gorgon_background_file.o ./obj/gorgon_background_file.o
 
 list:
-	ar tv libgorgon.a
+	ar tv ./static/libgorgon.a
+
+clear:
+	@rm -rdf *~
+	@rm -rdf ./include/*~
+	@rm -rdf ./src/*~
+	@rm -rdf ./examples/*~
+	@rm -rdf ./testes/*~
 	
 test: ./static/libgorgon.a
 	$(COMP) ./testes/test.c -o ./testes/test.e ./static/libgorgon.a `allegro-config --libs` ./fmod/lib/libfmodex.so.4.08.08 -O2
 
-#oi eu sou o fim
+
