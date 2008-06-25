@@ -1,5 +1,5 @@
 #examples make file
-COMP:= g++
+COMP:= gcc
 
 all: animation_file sprite_file
 

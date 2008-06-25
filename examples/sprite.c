@@ -37,23 +37,16 @@ int main()
 {
 	gorgonSpritePack spritePack1;
 	gorgonSpritePack spritePack;
-	gorgonSff sff;
-	BITMAP *sprite;
-init();	
-gorgonLoadSff(&sff,"alucard.sff");
-	
-	if(gorgonLoadSpritePackFromSff(&spritePack1,"alucard.sff")!=GORGON_OK)		return 1;
-	if(gorgonSaveSpritePack("megaman.spk",&spritePack1)!=GORGON_OK)			return 1;
-	if(gorgonLoadSpritePack(&spritePack,"megaman.spk")!=GORGON_OK)			return 1;
+	init();	
 
-sprite=create_bitmap(sff.sprite[3].image->w,sff.sprite[3].image->h);
-set_palette(sff.sprite[3].pal);
-blit(sff.sprite[3].image,sprite,0,0,0,0,sprite->w,sprite->h);
-gorgonSavePalette("3.act",spritePack.sprite[3].pal);
+	if(gorgonLoadSpritePackFromSff(&spritePack1,"yamatto.sff")!=GORGON_OK)		return 1;
+	if(gorgonSaveSpritePack("yamatto.spk",&spritePack1)!=GORGON_OK)		return 1;
+	if(gorgonLoadSpritePack(&spritePack,"yamatto.spk")!=GORGON_OK)			return 1;
+
 	while(!key[KEY_ESC])
 	{
 		gorgonDrawSpriteByIndex(screen,&spritePack,NULL,0,NORMAL,200,200);
-		draw_sprite(screen,sprite,100,100);
+		
 	}
 	denit();
 	return 0;

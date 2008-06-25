@@ -1,12 +1,15 @@
 /**
  * seção dedicada aos tratamentos de cenário
  *
+ * @author: Cantídio Oliveira Fontes
+ * @since: 26/05/2008
+ * @final: 25/06/2008
  */
 #ifndef GORGON_BACKGROUND
 #define GORGON_BACKGROUND
 
-#define ALL_LAYERS		-1
-#define BACK_LAYERS		-2
+#define ALL_LAYERS	-1
+#define BACK_LAYERS	-2
 #define FRONT_LAYERS	-3
 #define PLAYER_LAYER	-4
 
@@ -38,19 +41,21 @@ typedef struct
 
 typedef struct
 {
-	gorgonAnimationPack animationPack;
+	gorgonLayer *layer;
+	short layerNumber;
+}gorgonLayerPack;
+
+typedef struct
+{
+	gorgonAnimationPack	animationPack;
 	gorgonSpritePack	spritePack;
-	short 				width;
-	short 				height;
-	short 				boundLeft;
-	short 				boundRight;
-	short 				boundDown;
-	short 				boundUp;
-	short				posX;
-	short 				posY;
-	short				playerLayer;//qual layer o jogador é desenhado
-	short 				layerNumber;
-	gorgonLayer 		*layer;
+	gorgonLayerPack		layerPack;
+//	gorgonBackgroundClsn	backgroundClsn;
+	short 			width;
+	short 			height;
+	short			posX;
+	short 			posY;
+	short			playerLayer;//qual layer o jogador é desenhado
 	//music ?
 }gorgonBackground;
 
@@ -59,12 +64,13 @@ int gorgonDestroyTile(gorgonTile *tile);
 int gorgonSetTilePositionByLayer(gorgonTile *tile, short number,short posX,short posY);
 int gorgonCreateLayer(gorgonLayer *layer,float scrollingSpeedX,float scrollingSpeedY,short tileNumber);
 int gorgonDestroyLayer(gorgonLayer *layer);
-int gorgonCreateBackground(gorgonBackground *background,short width,short height,short boundLeft,short boundRight, short boundUp, short boundDown,short posX,short posY,short playerLayer, short layerNumber);
+int gorgonCreateLayerPack(gorgonLayerPack *layerPack,short layerNumber);
+int gorgonCreateBackground(gorgonBackground *background,short width,short height,short posX,short posY,short playerLayer, short layerNumber);
 int gorgonDestroyBackground(gorgonBackground *background);
 
 int gorgonDrawTile(BITMAP *buffer,gorgonBackground *background,short layer,short tile);
-int gorgonDrawTile(BITMAP *buffer,gorgonTile *tile,short posX,short posY,gorgonSpritePack *spritePack,gorgonAnimationPack *animationPack);
+//int gorgonDrawTile(BITMAP *buffer,gorgonTile *tile,short posX,short posY,gorgonSpritePack *spritePack,gorgonAnimationPack *animationPack);
 int gorgonDrawLayer(BITMAP *buffer,gorgonBackground *background,short layerNumber);
-int gorgonDrawLayer(BITMAP *buffer,gorgonLayer *layer,short posX,short posY, gorgonSpritePack *spritePack,gorgonAnimationPack *animationPack);
+//int gorgonDrawLayer(BITMAP *buffer,gorgonLayer *layer,short posX,short posY, gorgonSpritePack *spritePack,gorgonAnimationPack *animationPack);
 int gorgonDrawBackground(BITMAP *buffer,gorgonBackground *background,short type);
 #endif

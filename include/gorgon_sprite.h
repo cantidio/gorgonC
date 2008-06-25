@@ -34,7 +34,7 @@ int gorgonConvertSffToSpritePack(gorgonSpritePack *spritePack, gorgonSff *sff);
 int gorgonLoadSpritePackFromSff(gorgonSpritePack *spritePack,char *filename);
 int gorgonDestroySprite(gorgonSprite *sprite);
 int gorgonDestroySpritePack(gorgonSpritePack *spritePack);
-int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,short type,short posX,short posY);
-int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,short type,short angle, short posX,short posY);
-int gorgonDrawSpriteByGroup(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short group,short spr,short type,short posX,short posY);
+int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,char type,short posX,short posY);
+int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,char type,short angle, short posX,short posY);
+int gorgonDrawSpriteByGroup(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short group,short spr,char type,short posX,short posY);
 #endif

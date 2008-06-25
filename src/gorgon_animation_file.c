@@ -193,7 +193,7 @@ int gorgonSaveClsn(char *filename, gorgonClsn *clsn)
 		file=fopen(filename,"wb");
 		if(file!=NULL)
 		{
-				error=gorgonSaveClsn_f(file,clsn);
+			error=gorgonSaveClsn_f(file,clsn);
 			fclose(file);
 			return error;
 		}
@@ -227,7 +227,7 @@ int gorgonSaveFrame(char *filename, gorgonFrame *frame)
 		file=fopen(filename,"wb");
 		if(file!=NULL)
 		{
-				error=gorgonSaveFrame_f(file,frame);
+			error=gorgonSaveFrame_f(file,frame);
 			fclose(file);
 			return error;
 		}
@@ -261,7 +261,7 @@ int gorgonSaveAnimation(char *filename, gorgonAnimation *animation)
 		file=fopen(filename,"wb");
 		if(file!=NULL)
 		{
-				error=gorgonSaveAnimation_f(file,animation);
+			error=gorgonSaveAnimation_f(file,animation);
 			fclose(file);
 			return error;
 		}
@@ -295,7 +295,7 @@ int gorgonSaveAnimationPack(char *filename, gorgonAnimationPack *animationPack)
 	{
 		if(file!=NULL)
 		{
-				error=gorgonSaveAnimationPack_f(file,animationPack);
+			error=gorgonSaveAnimationPack_f(file,animationPack);
 			fclose(file);
 			return error;
 		}
@@ -649,8 +649,7 @@ int gorgonLoadAnimationPack(gorgonAnimationPack *animationPack,char *filename)
 			fclose(file);
 			erro=gorgonLoadAnimationPack_fm(animationPack,data,&ofs);
 			free(data);			
-			if(erro!=GORGON_OK) return erro;
-			return GORGON_OK;
+			return erro;
 		}
 		return GORGON_MEMORY_ERROR;
 	}

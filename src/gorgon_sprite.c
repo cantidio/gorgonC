@@ -143,7 +143,7 @@ int gorgonDestroySpritePack(gorgonSpritePack *spritePack)
  * @param: BITMAP *, apontador para um superfície onde o sprite será desenhado
  * @param: RGB *, apontador para um palheta de cores
  * @param: short, o indice do frame
- * @param: short, opção de desenho, NORMAL, H_FLIP, V_FLIP, HV_FLIP
+ * @param: char, opção de desenho, NORMAL, H_FLIP, V_FLIP, HV_FLIP
  * @param: short, posição x que será desenhado na superfície
  * @param: short, posição y que será desenhado na superfície
  * @return: int gorgon_error
@@ -157,7 +157,7 @@ int gorgonDestroySpritePack(gorgonSpritePack *spritePack)
  *  if(gorgonDrawSpriteByIndex(&a,buffer,pal,index,NORMAL,posX,posY)!=GORGON_OK)
  *	  printf("erro\n");
  */
-int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,short type,short posX,short posY)
+int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,char type,short posX,short posY)
 {
 	RGB trans = { 63 , 0 , 63 };
 	BITMAP *sprite;
@@ -217,7 +217,7 @@ int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short ind
  * @param: BITMAP *, apontador para um superfície onde o sprite será desenhado
  * @param: RGB *, apontador para um palheta de cores
  * @param: short, o indice do frame
- * @param: short, opção de desenho, NORMAL, H_FLIP, V_FLIP, HV_FLIP
+ * @param: char, opção de desenho, NORMAL, H_FLIP, V_FLIP, HV_FLIP
  * @param: short, o ângulo que o sprite deverá ser desenhado
  * @param: short, posição x que será desenhado na superfície
  * @param: short, posição y que será desenhado na superfície
@@ -232,7 +232,7 @@ int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short ind
  *  if(gorgonDrawRotatedSpriteByIndex(&a,buffer,pal,index,NORMAL,60,posX,posY)!=GORGON_OK)
  *	  printf("erro\n");
  */
-int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,short type,short angle, short posX,short posY)
+int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,char type,short angle, short posX,short posY)
 {
 	RGB trans = { 63 , 0 , 63 };
 	BITMAP *sprite;
@@ -296,7 +296,7 @@ int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,sh
  *  if(gorgonDrawSpriteByIndex(&a,buffer,pal,NORMAL,index,posX,posY)!=GORGON_OK)
  *	  printf("erro\n");
  */
-int gorgonDrawSpriteByGroup(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short group,short spr,short type,short posX,short posY)
+int gorgonDrawSpriteByGroup(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short group,short spr,char type,short posX,short posY)
 {
 	RGB trans = { 63 , 0 , 63 };
 	short i;

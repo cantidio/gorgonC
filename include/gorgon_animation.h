@@ -66,7 +66,9 @@ int gorgonCreateAnimationPack(gorgonAnimationPack *pack,short animation);
 int gorgonMakeAnimationIndexes(gorgonAnimation *anim, gorgonSpritePack *sprites);
 int gorgonMakeAnimationPackIndexes(gorgonAnimationPack *animationPack,gorgonSpritePack *spritePack);
 int gorgonDrawClsn(BITMAP *layer, gorgonClsn *clsn,short type,short posX,short posY);
-int gorgonShowAnimation(gorgonAnimation *anim,gorgonSpritePack *sprites,BITMAP *layer,RGB *pal,short posX,short posY);
+
+int gorgonShowAnimation(BITMAP *layer,gorgonAnimation *anim,gorgonSpritePack *sprites,RGB *pal,char type,short posX,short posY);
+
 
 int gorgonDestroyClsn(gorgonClsn *clsn);
 int gorgonDestroyFrame(gorgonFrame *frame);

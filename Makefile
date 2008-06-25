@@ -3,11 +3,11 @@
 #	ar ds libnome.a lista_de_ficheiros_objecto para apagar os lobjteos
 #	ar rus libnome.a lista_de_ficheiros_objecto para atualizar
 #	ar rs libnome.a lista_de_ficheiros_objecto para criar
-COMP := g++
+COMP := gcc
 
 all: STATIC #SHARED
 
-STATIC: GORGON_PALETTE GORGON_PCX GORGON_SFF GORGON_SPRITE GORGON_SPRITE_FILE GORGON_SOUND GORGON_ANIMATION GORGON_ANIMATION_FILE GORGON_BACKGROUND
+STATIC: GORGON_PALETTE GORGON_PCX GORGON_SFF GORGON_SPRITE GORGON_SPRITE_FILE GORGON_SOUND GORGON_ANIMATION GORGON_ANIMATION_FILE GORGON_BACKGROUND GORGON_BACKGROUND_FILE
 	ar rc libgorgon.a				\
 	./obj/gorgon_palette.o			\
 	./obj/gorgon_pcx.o			\
@@ -17,7 +17,8 @@ STATIC: GORGON_PALETTE GORGON_PCX GORGON_SFF GORGON_SPRITE GORGON_SPRITE_FILE GO
 	./obj/gorgon_sound.o			\
 	./obj/gorgon_animation.o    		\
 	./obj/gorgon_animation_file.o		\
-	./obj/gorgon_background.o
+	./obj/gorgon_background.o		\
+	./obj/gorgon_background_file.o
 	mv ./libgorgon.a ./static/libgorgon.a
 
 #SHARED: GORGON_ANIMATION GORGON_ANIMATION_FILE GORGON_PALETTE GORGON_SFF GORGON_SOUND GORGON_SPRITE 
@@ -75,7 +76,11 @@ GORGON_ANIMATION_FILE: ./src/gorgon_animation_file.c ./include/gorgon_animation_
 GORGON_BACKGROUND: ./include/gorgon_background.h ./src/gorgon_background.c
 	$(COMP) -c ./src/gorgon_background.c 
 	mv gorgon_background.o ./obj/gorgon_background.o
-		
+
+GORGON_BACKGROUND_FILE: ./include/gorgon_background_file.h ./src/gorgon_background_file.c
+	$(COMP) -c ./src/gorgon_background_file.c
+	mv gorgon_background_file.o ./obj/gorgon_background_file.o
+
 list:
 	ar tv libgorgon.a
 	

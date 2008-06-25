@@ -28,8 +28,9 @@
 #define GORGON_INVALID_SOUND		23	//variavel de som inválida, provavelmente ponteiro em NULL
 #define GORGON_INVALID_BACKGROUND	24	//valor para o background inválido, provavelmente ponteiro em NULL
 #define GORGON_INVALID_LAYER		25	//valor para a camada do cenário é inválida, provavelmente ponteiro em NULL
-#define GORGON_INVALID_TILE		26	//valor para um tile do cenário é inválido, provavelmente ponteiro em NULL
-#define GORGON_INVALID_MEMORY_OFFSET	27
+#define GORGON_INVALID_LAYERPACK	26
+#define GORGON_INVALID_TILE		27	//valor para um tile do cenário é inválido, provavelmente ponteiro em NULL
+#define GORGON_INVALID_MEMORY_OFFSET	28
 
 
 #endif

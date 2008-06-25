@@ -16,10 +16,10 @@ int gorgonCreateTile(gorgonTile *tile,short animationIndex,short objNumber)
 	{
 		if(objNumber>0)
 		{
-			tile->animationIndex= animationIndex;
+			tile->animationIndex	= animationIndex;
 			tile->number		= objNumber;
-			tile->posX			= (short *)malloc(sizeof(short)*objNumber);
-			tile->posY			= (short *)malloc(sizeof(short)*objNumber);
+			tile->posX		= (short *)malloc(sizeof(short)*objNumber);
+			tile->posY		= (short *)malloc(sizeof(short)*objNumber);
 			if(tile->posX !=NULL && tile->posY!=NULL)
 				return GORGON_OK;
 			return GORGON_MEMORY_ERROR;
@@ -72,8 +72,8 @@ int gorgonCreateLayer(gorgonLayer *layer,float scrollingSpeedX,float scrollingSp
 	{
 		layer->scrollingSpeedX	= scrollingSpeedX;
 		layer->scrollingSpeedY	= scrollingSpeedY;
-		layer->tileNumber		= tileNumber;
-		layer->tile				= (gorgonTile *)malloc(sizeof(gorgonTile)*tileNumber);
+		layer->tileNumber	= tileNumber;
+		layer->tile		= (gorgonTile *)malloc(sizeof(gorgonTile)*tileNumber);
 		if(layer->tile!=NULL)
 		{
 			for(i=0; i<tileNumber; layer->tile[i].number=0,i++);
@@ -83,19 +83,49 @@ int gorgonCreateLayer(gorgonLayer *layer,float scrollingSpeedX,float scrollingSp
 	}
 	return GORGON_INVALID_LAYER;
 }
+
+/**
+ * função para criar um cenário, alocando a sua devida memória
+ *
+ * @author: Cantídio Oliveira Fontes
+ * @since: 24/06/2008 
+ * @final: 24/06/2008
+ * @param: gorgonLayerPack *, ponteiro para o pacote de camadas
+ * @param: short, número de camadas que o cenário terá
+ * @return: int gorgon_error
+ * @exemple:
+ * 
+ * gorgonLayerPack layerPack;
+ * 
+ * if(gorgonCreateLayerPack(&layerPack,3)!=GORGON_OK)
+ *		printf("erro\n");
+ */
+int gorgonCreateLayerPack(gorgonLayerPack *layerPack,short layerNumber)
+{
+	if(layerPack!=NULL)
+	{
+		if(layerNumber>0)
+		{
+			layerPack->layerNumber=layerNumber;
+			layerPack->layer=(gorgonLayer *)malloc(sizeof(gorgonLayer)*layerNumber);
+			if(layerPack->layer!=NULL)
+				return GORGON_OK;
+			return GORGON_MEMORY_ERROR;
+		}
+		return GORGON_INVALID_INDEX;
+	}
+	return GORGON_INVALID_LAYERPACK;
+}
+
 /**
  * função para criar um cenário, alocando a sua devida memória
  *
  * @author: Cantídio Oliveira Fontes
  * @since: 26/05/2008 
- * @final: 06/06/2008
+ * @final: 24/06/2008
  * @param: gorgonBackGround *, ponteiro para o cenário que deseja ser criado/alocado
  * @param: short, largura do cenário
  * @param: short, altura do cenário
- * @param: short, limite a esquerda
- * @param: short, limite a direita
- * @param: short, limite a cima
- * @param: short, limite a baixo
  * @param: short, posição inicial em x
  * @param: short, posição inicial em y
  * @param: short, o número da camada em que o personagem será exibido
@@ -108,28 +138,18 @@ int gorgonCreateLayer(gorgonLayer *layer,float scrollingSpeedX,float scrollingSp
  * if(gorgonCreateBackground(&bg,320,240,0,320,0,240,0,0,2,3)!=GORGON_OK)
  *		printf("erro\n");
  */
-int gorgonCreateBackground(gorgonBackground *background,short width,short height,short boundLeft,short boundRight, short boundUp, short boundDown,short posX,short posY,short playerLayer, short layerNumber)
+int gorgonCreateBackground(gorgonBackground *background,short width,short height,short posX,short posY,short playerLayer, short layerNumber)
 {
 	if(background!=NULL)
 	{
 		if(layerNumber>0 && playerLayer>=0)
 		{
-			background->width							= width;
-			background->height							= height;
-			background->posX							= posX;
-			background->posY							= posY;
-			background->boundLeft						= boundLeft;
-			background->boundRight						= boundRight;
-			background->boundUp							= boundUp;
-			background->boundDown						= boundDown;
+			background->width						= width;
+			background->height						= height;
+			background->posX						= posX;
+			background->posY						= posY;
 			background->playerLayer						= playerLayer;
-			background->layerNumber						= layerNumber;
-			background->animationPack.animationNumber	= 0;
-			
-			background->layer=(gorgonLayer *)malloc(layerNumber*sizeof(gorgonLayer));
-			if(background->layer!=NULL)
-				return GORGON_OK;
-			return GORGON_MEMORY_ERROR;
+			return gorgonCreateLayerPack(&background->layerPack,layerNumber);
 		}
 		return GORGON_INVALID_INDEX;
 	}
@@ -159,9 +179,9 @@ int gorgonDrawTile(BITMAP *buffer,gorgonBackground *background,short layer,short
 	int i, error;
 	if(background!=NULL)
 	{
-		for(i=0; i<background->layer[layer].tile[tile].number; i++)
+		for(i=0; i<background->layerPack.layer[layer].tile[tile].number; i++)
 		{
-			error=gorgonShowAnimation(&background->animationPack.animation[background->layer[layer].tile[tile].animationIndex],&background->spritePack,buffer,NULL,(short)((background->posX + background->layer[layer].tile[tile].posX[i])*background->layer[layer].scrollingSpeedX),(short)((background->posY + background->layer[layer].tile[tile].posY[i])*background->layer[layer].scrollingSpeedY));
+			error=gorgonShowAnimation(buffer,&background->animationPack.animation[background->layerPack.layer[layer].tile[tile].animationIndex],&background->spritePack,NULL,NORMAL,(short)((background->posX + background->layerPack.layer[layer].tile[tile].posX[i])*background->layerPack.layer[layer].scrollingSpeedX),(short)((background->posY + background->layerPack.layer[layer].tile[tile].posY[i])*background->layerPack.layer[layer].scrollingSpeedY));
 			if(error!=GORGON_OK)	return error;
 		}
 		return GORGON_OK;
@@ -191,21 +211,21 @@ int gorgonDrawTile(BITMAP *buffer,gorgonBackground *background,short layer,short
  * if(gorgonDrawTile(buffer,&tile,0,0,&spritePack,&animationPack)!=GORGON_OK)
  *		printf("erro\n");
  */
-int gorgonDrawTile(BITMAP *buffer,gorgonTile *tile,short posX,short posY,gorgonSpritePack *spritePack,gorgonAnimationPack *animationPack)
+/*int gorgonDrawTile(BITMAP *buffer,gorgonTile *tile,short posX,short posY,gorgonSpritePack *spritePack,gorgonAnimationPack *animationPack)
 {
 	int i,error;
 	if(tile!=NULL)
 	{
 		for(i=0; i<tile->number; i++)
 		{
-			error=gorgonShowAnimation(&animationPack->animation[tile->animationIndex],spritePack,buffer,NULL,posX+tile->posX[i],posY+tile->posY[i]);
+			error=gorgonShowAnimation(buffer,&animationPack->animation[tile->animationIndex],spritePack,NULL,NORMAL,posX+tile->posX[i],posY+tile->posY[i]);
 			if(error!=GORGON_OK)
 				return error;
 		}
 		return GORGON_OK;
 	}
 	return GORGON_INVALID_TILE;
-}
+}*/
 
 /**
  * função para desenhar uma camada do cenário
@@ -230,9 +250,9 @@ int gorgonDrawLayer(BITMAP *buffer,gorgonBackground *background,short layerNumbe
 	int i,error;
 	if(background!=NULL)
 	{
-		if(layerNumber<background->layerNumber)
+		if(layerNumber<background->layerPack.layerNumber)
 		{
-			for(i=0; i<background->layer[layerNumber].tileNumber; i++)
+			for(i=0; i<background->layerPack.layer[layerNumber].tileNumber; i++)
 			{
 				error=gorgonDrawTile(buffer,background,layerNumber,i);
 				if(error!=GORGON_OK)	return error;
@@ -266,7 +286,7 @@ int gorgonDrawLayer(BITMAP *buffer,gorgonBackground *background,short layerNumbe
  * if(gorgonDrawLayer(buffer,&layer,0,0,&spritePack,&animationPack)!=GORGON_OK)
  *		printf("erro\n");
  */
-int gorgonDrawLayer(BITMAP *buffer,gorgonLayer *layer,short posX,short posY, gorgonSpritePack *spritePack,gorgonAnimationPack *animationPack)
+/*int gorgonDrawLayer(BITMAP *buffer,gorgonLayer *layer,short posX,short posY, gorgonSpritePack *spritePack,gorgonAnimationPack *animationPack)
 {
 	int i,error;
 	float x;
@@ -283,7 +303,7 @@ int gorgonDrawLayer(BITMAP *buffer,gorgonLayer *layer,short posX,short posY, gor
 		return GORGON_OK;
 	}
 	return GORGON_INVALID_LAYER;
-}
+}*/
 
 /**
  * função para desenhar um cenário
@@ -315,7 +335,7 @@ int gorgonDrawBackground(BITMAP *buffer,gorgonBackground *background,short type)
 	switch(type)
 	{
 		case ALL_LAYERS:
-			for(i=0; i<background->layerNumber; i++)
+			for(i=0; i<background->layerPack.layerNumber; i++)
 			{
 				error=gorgonDrawLayer(buffer,background,i);
 				if(error!=GORGON_OK)
@@ -335,7 +355,7 @@ int gorgonDrawBackground(BITMAP *buffer,gorgonBackground *background,short type)
 		break;
 
 		case FRONT_LAYERS:
-			for(i=background->playerLayer+1; i<background->layerNumber; i++)
+			for(i=background->playerLayer+1; i<background->layerPack.layerNumber; i++)
 			{
 				error=gorgonDrawLayer(buffer,background,i);
 				if(error!=GORGON_OK)
@@ -421,11 +441,42 @@ int gorgonDestroyLayer(gorgonLayer *layer)
 	return GORGON_INVALID_LAYER;
 }
 /**
+ * função para desalocar um pacote de camadas da memória
+ *
+ * @author: Cantídio Oliveira Fontes
+ * @since: 24/06/2008 
+ * @final: 24/06/2008
+ * @param: gorgonLayerPack *, ponteiro para o pacote de camadas que se deseja desalocar
+ * @return: int gorgon_error
+ * @exemple:
+ * 
+ * gorgonLayer layer;
+ * 
+ * if(gorgonDestroyLayer(&layer)!=GORGON_OK)
+ *		printf("erro\n");
+ */
+int gorgonDestroyLayerPack(gorgonLayerPack *layerPack)
+{
+	int i, error;
+	if(layerPack!=NULL)
+	{
+		for(i=0; i<layerPack->layerNumber; i++)
+		{
+			error=gorgonDestroyLayer(&layerPack->layer[i]);
+			if(error!=GORGON_OK) return error;
+		}
+		free(layerPack->layer);
+		layerPack->layerNumber=0;
+		return GORGON_OK;
+	}
+	return GORGON_INVALID_LAYERPACK;
+}
+/**
  * função para desalocar um cenário da memória
  *
  * @author: Cantídio Oliveira Fontes
  * @since: 26/05/2008 
- * @final: 28/05/2008
+ * @final: 24/06/2008
  * @param: gorgonBackGround *, ponteiro para o cenário que deseja se desalocar
  * @return: int gorgon_error
  * @exemple:
@@ -440,30 +491,61 @@ int gorgonDestroyBackground(gorgonBackground *background)
 	int i, error;
 	if(background!=NULL)
 	{
-		for(i=0; i<background->layerNumber; i++)
-		{
-			error=gorgonDestroyLayer(&background->layer[i]);
-			if(error!=GORGON_OK) return error;
-		}
-		free(background->layer);
-		background->layer=NULL;
-		background->width		= 0;
-		background->height		= 0;
-		background->boundLeft	= 0;
-		background->boundRight	= 0;
-		background->boundUp		= 0;
-		background->boundDown	= 0;
-		background->posX		= 0;
-		background->posY		= 0;
-		background->playerLayer	= 0;
 		error=gorgonDestroySpritePack(&background->spritePack);
 		if(error!=GORGON_OK) return error;
 		error=gorgonDestroyAnimationPack(&background->animationPack);
 		if(error!=GORGON_OK) return error;
 		return GORGON_OK;
+		error=gorgonDestroyLayerPack(&background->layerPack);
+		if(error!=GORGON_OK) return error;
+		background->width	= 0;
+		background->height	= 0;
+		background->posX	= 0;
+		background->posY	= 0;
+		background->playerLayer	= 0;
 	}
 	return GORGON_INVALID_BACKGROUND;
 }
-
-
-
+/**
+ * função para imprimir os valores de um background, para fins de debug
+ *
+ * @author: Cantídio Oliveira Fontes
+ * @since: 24/06/2008
+ * @final: 24/06/2008
+ * @param: gorgonBackground *, ponteiro para o background
+ * @return: int gorgon_error
+ */
+int gorgonPrintBackgroundValues(gorgonBackground *background)
+{
+	int i,j,k;
+	if(background!=NULL)
+	{
+		printf("width: %d\n",background->width);
+		printf("height: %d\n",background->height);
+		printf("posX: %d\n",background->posX);
+		printf("posY: %d\n",background->posY);
+		printf("playerLayer: %d\n\n",background->playerLayer);
+		printf("layerNumber: %d\n",background->layerPack.layerNumber);
+		for(i=0; i<background->layerPack.layerNumber; i++)
+		{
+			printf("Layer: %d\n",i+1);
+			printf("scrollingspeedX: %f\n",background->layerPack.layer[i].scrollingSpeedX);
+			printf("scrollingspeedY: %f\n\n",background->layerPack.layer[i].scrollingSpeedY);
+			printf("tileNumber: %d\n",background->layerPack.layer[i].tileNumber);
+			for(j=0; j<background->layerPack.layer[i].tileNumber; j++)
+			{
+				printf("Tile: %d\n",j+1);
+				printf("animationIndex: %d\n\n",background->layerPack.layer[i].tile[j].animationIndex);
+				printf("Number: %d\n",background->layerPack.layer[i].tile[j].number);
+				for(k=0; k<background->layerPack.layer[i].tile[j].number; k++)
+				{
+					printf("obj: %d\n",k+1);
+					printf("posX: %d\n",background->layerPack.layer[i].tile[j].posX[k]);
+					printf("posY: %d\n",background->layerPack.layer[i].tile[j].posY[k]);
+				}
+			}
+		}
+		return GORGON_OK;
+	}
+	return GORGON_INVALID_BACKGROUND;
+}
