@@ -347,5 +347,60 @@ int gorgonDrawSpriteByGroup(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short gro
 	}
 	return GORGON_INVALID_SPRITEPACK;
 }
-
+/**
+ * funçao para desenhar um sprite de um spritePack através de um index, com um corte
+ *
+ * @author: Cantídio Oliveira Fontes
+ * @since: 02/07/2008
+ * @final: 02/07/2008
+ * @param: BITMAP *, apontador para um superfície onde o sprite será desenhado
+ * @param: gorgonSpritePack *, ponteiro para um gorgonSpritePack
+ * @param: RGB *, apontador para um palheta de cores
+ * @param: short, o indice do frame
+ * @param: short, posição x que será desenhado na superfície
+ * @param: short, posição y que será desenhado na superfície
+ * @param: short, ponto X de inicio de corte na imagem de origem
+ * @param: short, ponto Y de inicio de corte na imagem de origem
+ * @param: short, ponto X de inicio de desenho na imagem de destino
+ * @param: short, ponto Y de inicio de desenho na imagem de destino
+ * @param: short, largura a ser desenhada
+ * @param: short, altura a ser desenhada
+ * @return: int gorgon_erro
+ * @example:
+ *
+ * short index=0,posX=10,posY=23;
+ * BITMAP *buffer;
+ * RGB *pal;
+ * gorgonSpritePack spritePack;
+ *
+ *  if(gorgonBlitSpriteByIndex(&spritePack,buffer,pal,index,posX,posY,0,0,0,0,5,5)!=GORGON_OK)
+ *	  printf("erro\n");
+ */
+int gorgonBlitSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,short posX,short posY,short sourceX,short sourceY,short destX,short destY,short width,short height)
+{
+	RGB trans = { 63 , 0 , 63 };
+	BITMAP *sprite;
+	if(index<a->spriteNumber)
+	{
+		if(&a->sprite[index]!=NULL)
+		{
+			if(a->sprite[index].image!=NULL && layer!=NULL)
+			{
+				sprite=create_bitmap(a->sprite[index].image->w,a->sprite[index].image->h);
+				clear_to_color(sprite,makecol(255,0,255));
+				if(pal!=NULL)
+					set_palette(pal);
+				else if(a->sprite[index].pal!=NULL)
+					set_palette(a->sprite[index].pal);
+				blit(a->sprite[index].image,sprite,sourceX,sourceY,destX,destY,width,height);
+				draw_sprite(layer,sprite,posX-a->sprite[index].x,posY-a->sprite[index].y);
+				destroy_bitmap(sprite);
+				return GORGON_OK;
+			}
+			return GORGON_INVALID_IMAGE;
+		}
+		return GORGON_INVALID_SPRITE;
+	}
+	return GORGON_INVALID_INDEX;
+}
 

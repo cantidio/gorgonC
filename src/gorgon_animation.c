@@ -306,7 +306,7 @@ int gorgonDrawClsn(BITMAP *layer, gorgonClsn *clsn,short type,short posX,short p
  *
  * @autor: Cantidio Oliveira Fontes
  * @since: 01/05/2008
- * @final: 22/06/2008
+ * @final: 01/07/2008
  * @param: gorgonAnimation *, ponteiro para um gorgonAnimation que deseja-se otimizar
  * @param: gorgonSpritePack *, ponteiro para um gorgonSpritePack
  * @param: BITMAP *, ponteiro para a superfície onde será desenhada a animacao
@@ -329,144 +329,147 @@ int gorgonDrawClsn(BITMAP *layer, gorgonClsn *clsn,short type,short posX,short p
 int gorgonShowAnimation(BITMAP *layer,gorgonAnimation *anim,gorgonSpritePack *sprites,RGB *pal,char type,short posX,short posY)
 {
 	short error;
-	if(anim->frame[anim->frameOn].index>(-1))
+	if(anim!=NULL)
 	{
-		switch(type)
+		if(anim->frame[anim->frameOn].index>(-1))
 		{
-			case NORMAL:
-				error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,anim->frame[anim->frameOn].effect,posX,posY);
-				break;
-			case H_FLIP:
-				switch(anim->frame[anim->frameOn].effect)
-				{
-					case NORMAL:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,H_FLIP,posX,posY);
-						break;
-					case H_FLIP:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,NORMAL,posX,posY);
-						break;
-					case V_FLIP:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,HV_FLIP,posX,posY);
-						break;
-					case HV_FLIP:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,V_FLIP,posX,posY);
-						break;
-				}
-				break;
-			case V_FLIP:
-				switch(anim->frame[anim->frameOn].effect)
-				{
-					case NORMAL:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,V_FLIP,posX,posY);
-						break;
-					case H_FLIP:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,HV_FLIP,posX,posY);
-						break;
-					case V_FLIP:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,NORMAL,posX,posY);
-						break;
-					case HV_FLIP:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,H_FLIP,posX,posY);
-						break;
-				}
-				break;
-			case HV_FLIP:
-				switch(anim->frame[anim->frameOn].effect)
-				{
-					case NORMAL:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,HV_FLIP,posX,posY);
-						break;
-					case H_FLIP:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,V_FLIP,posX,posY);
-						break;
-					case V_FLIP:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,H_FLIP,posX,posY);
-						break;
-					case HV_FLIP:
-						error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,NORMAL,posX,posY);
-						break;
-				}
-				break;
-
+			switch(type)
+			{
+				case NORMAL:
+					error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,anim->frame[anim->frameOn].effect,posX,posY);
+					break;
+				case H_FLIP:
+					switch(anim->frame[anim->frameOn].effect)
+					{
+						case NORMAL:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,H_FLIP,posX,posY);
+							break;
+						case H_FLIP:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,NORMAL,posX,posY);
+							break;
+						case V_FLIP:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,HV_FLIP,posX,posY);
+							break;
+						case HV_FLIP:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,V_FLIP,posX,posY);
+							break;
+					}
+					break;
+				case V_FLIP:
+					switch(anim->frame[anim->frameOn].effect)
+					{
+						case NORMAL:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,V_FLIP,posX,posY);
+							break;
+						case H_FLIP:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,HV_FLIP,posX,posY);
+							break;
+						case V_FLIP:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,NORMAL,posX,posY);
+							break;
+						case HV_FLIP:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,H_FLIP,posX,posY);
+							break;
+					}
+					break;
+				case HV_FLIP:
+					switch(anim->frame[anim->frameOn].effect)
+					{
+						case NORMAL:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,HV_FLIP,posX,posY);
+							break;
+						case H_FLIP:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,V_FLIP,posX,posY);
+							break;
+						case V_FLIP:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,H_FLIP,posX,posY);
+							break;
+						case HV_FLIP:
+							error=gorgonDrawSpriteByIndex(layer,sprites,pal,anim->frame[anim->frameOn].index,NORMAL,posX,posY);
+							break;
+					}
+					break;
+			}
+			if(error!=GORGON_OK) return error;
 		}
-		if(error!=GORGON_OK) return error;
-	}
-	else
-	{
-		switch(type)
+		else
 		{
-			case NORMAL:
-				error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,anim->frame[anim->frameOn].effect,posX,posY);
-				break;
-			case H_FLIP:
-				switch(anim->frame[anim->frameOn].effect)
-				{
-					case NORMAL:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,H_FLIP,posX,posY);
-						break;
-					case H_FLIP:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,NORMAL,posX,posY);
-						break;
-					case V_FLIP:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,HV_FLIP,posX,posY);
-						break;
-					case HV_FLIP:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,V_FLIP,posX,posY);
-						break;
-				}
-				break;
-			case V_FLIP:
-				switch(anim->frame[anim->frameOn].effect)
-				{
-					case NORMAL:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,V_FLIP,posX,posY);
-						break;
-					case H_FLIP:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,HV_FLIP,posX,posY);
-						break;
-					case V_FLIP:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,NORMAL,posX,posY);
-						break;
-					case HV_FLIP:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,H_FLIP,posX,posY);
-						break;
-				}
-				break;
-			case HV_FLIP:
-				switch(anim->frame[anim->frameOn].effect)
-				{
-					case NORMAL:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,HV_FLIP,posX,posY);
-						break;
-					case H_FLIP:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,V_FLIP,posX,posY);
-						break;
-					case V_FLIP:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,H_FLIP,posX,posY);
-						break;
-					case HV_FLIP:
-						error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,NORMAL,posX,posY);
-						break;
-				}
-				break;
+			switch(type)
+			{
+				case NORMAL:
+					error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,anim->frame[anim->frameOn].effect,posX,posY);
+					break;
+				case H_FLIP:
+					switch(anim->frame[anim->frameOn].effect)
+					{
+						case NORMAL:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,H_FLIP,posX,posY);
+							break;
+						case H_FLIP:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,NORMAL,posX,posY);
+							break;
+						case V_FLIP:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,HV_FLIP,posX,posY);
+							break;
+						case HV_FLIP:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,V_FLIP,posX,posY);
+							break;
+					}
+					break;
+				case V_FLIP:
+					switch(anim->frame[anim->frameOn].effect)
+					{
+						case NORMAL:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,V_FLIP,posX,posY);
+							break;
+						case H_FLIP:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,HV_FLIP,posX,posY);
+							break;
+						case V_FLIP:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,NORMAL,posX,posY);
+							break;
+						case HV_FLIP:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,H_FLIP,posX,posY);
+							break;
+					}
+					break;
+				case HV_FLIP:
+					switch(anim->frame[anim->frameOn].effect)
+					{
+						case NORMAL:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,HV_FLIP,posX,posY);
+							break;
+						case H_FLIP:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,V_FLIP,posX,posY);
+							break;
+						case V_FLIP:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,H_FLIP,posX,posY);
+							break;
+						case HV_FLIP:
+							error=gorgonDrawSpriteByGroup(layer,sprites,pal,anim->frame[anim->frameOn].group,anim->frame[anim->frameOn].spr,NORMAL,posX,posY);
+							break;
+					}
+					break;
+			}
+			if(error!=GORGON_OK) return error;
 		}
-		if(error!=GORGON_OK) return error;
-	}
-  /*  gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnBlue,  CLSN_BLUE,  posX,posY);
-	gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnRed,   CLSN_RED,   posX,posY);
-	gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnUp,	CLSN_GREEN, posX,posY);
+	  /*  gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnBlue,  CLSN_BLUE,  posX,posY);
+		gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnRed,   CLSN_RED,   posX,posY);
+		gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnUp,	CLSN_GREEN, posX,posY);
 	gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnLeft,  CLSN_GREEN, posX,posY);
 	gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnDown,  CLSN_GREEN, posX,posY);
 	gorgonDrawClsn(layer,&anim->frame[anim->frameOn].clsnRight, CLSN_GREEN, posX,posY);*/
-	anim->timeOn++;
-	if(anim->timeOn>=anim->frame[anim->frameOn].time && anim->frame[anim->frameOn].time>-1)
-	{
-		anim->frameOn++;
-		anim->timeOn=0;
+		anim->timeOn++;
+		if(anim->timeOn>=anim->frame[anim->frameOn].time && anim->frame[anim->frameOn].time>-1)
+		{
+			anim->frameOn++;
+			anim->timeOn=0;
+		}
+		if(anim->frameOn>=anim->frames)
+			anim->frameOn=anim->looping;
+		return GORGON_OK;
 	}
-	if(anim->frameOn>=anim->frames)
-		anim->frameOn=anim->looping;
-	return GORGON_OK;
+	return GORGON_INVALID_ANIMATION;
 }
 
 /**
@@ -624,4 +627,15 @@ void gorgonPrintAnimationPackValues(gorgonAnimationPack *pk)
 			printf("trans: %d\n\n",pk->animation[i].frame[j].trans);
 		}
 	}
+}
+
+int gorgonAnimationFinished(gorgonAnimation *animation)
+{
+	if(animation!=NULL)
+	{
+		if((animation->timeOn+1>=animation->frame[animation->frameOn].time && animation->frame[animation->frameOn].time>-1) && (animation->frameOn+1>=animation->frames))
+			return 1;
+		return 0;
+	}
+	return 1;//se a animacao for nula retorna como a mesma acabou
 }

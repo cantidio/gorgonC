@@ -14,15 +14,14 @@ int gorgonGetDefaultAudioConfig(gorgonAudio *audio)
 {
 	if(audio!=NULL)
 	{
-		audio->audio=1;
-		audio->music=1;
-		audio->voice=1;
-		audio->effects=1;
-
-		audio->maxChannels=32;
-		audio->musicVolume=0.3;
-		audio->voiceVolume=0.5;
-		audio->effectsVolume=0.4;
+		audio->audio		= 1;
+		audio->music		= 1;
+		audio->voice		= 1;
+		audio->effects		= 1;
+		audio->maxChannels	= 32;
+		audio->musicVolume	= 0.3;
+		audio->voiceVolume	= 0.5;
+		audio->effectsVolume	= 0.4;
 		return GORGON_OK;
 	}
 	return GORGON_INVALID_AUDIO;
@@ -45,7 +44,7 @@ int gorgonGetDefaultAudioConfig(gorgonAudio *audio)
  * if(gorgonLoadAudioConfigBinFromMemory(&audio,data,&ofs)!=GORGON_OK)
  *		printf("erro!\n");
  */
-int gorgonLoadAudioConfigBinFromMemory(gorgonAudio *audio,char *data,int *ofs)
+int gorgonLoadAudioConfigBin_fm(gorgonAudio *audio,char *data,int *ofs)
 {
 	float 	*musicVolume;
 	float 	*voiceVolume;
@@ -61,7 +60,7 @@ int gorgonLoadAudioConfigBinFromMemory(gorgonAudio *audio,char *data,int *ofs)
 		{
 			musicVolume		=(float *)&data[*ofs];	(*ofs)+=sizeof(float);
 			voiceVolume		=(float *)&data[*ofs];	(*ofs)+=sizeof(float);
-			effectsVolume	=(float *)&data[*ofs];	(*ofs)+=sizeof(float);
+			effectsVolume		=(float *)&data[*ofs];	(*ofs)+=sizeof(float);
 			maxChannels		=(short *)&data[*ofs];	(*ofs)+=sizeof(short);
 			audioOn			=(short *)&data[*ofs];	(*ofs)+=sizeof(short);
 			musicOn			=(short *)&data[*ofs];	(*ofs)+=sizeof(short);
@@ -70,7 +69,7 @@ int gorgonLoadAudioConfigBinFromMemory(gorgonAudio *audio,char *data,int *ofs)
 			
 			audio->musicVolume	=*musicVolume;
 			audio->voiceVolume	=*voiceVolume;
-			audio->effectsVolume=*effectsVolume;
+			audio->effectsVolume	=*effectsVolume;
 			audio->maxChannels	=*maxChannels;
 			audio->audio		=*audioOn;
 			audio->music		=*musicOn;
@@ -89,7 +88,7 @@ int gorgonLoadAudioConfigBinFromMemory(gorgonAudio *audio,char *data,int *ofs)
  * @since: 	15/05/2008
  * @final: 	15/05/2008
  * @param:	gorgonAudio * apontador para um gorgonAudio que deseja-se guardar a configuração
- * @param:	const char * string com o nome do arquivo binário
+ * @param:	char * string com o nome do arquivo binário
  * @exemple:
  *
  * gorgonAudio audio;
@@ -97,26 +96,27 @@ int gorgonLoadAudioConfigBinFromMemory(gorgonAudio *audio,char *data,int *ofs)
  * if(gorgonLoadAudioConfigBin(&audio,"audio.bin")!=GORGON_OK)
  *		printf("erro!\n");
  */
-int gorgonLoadAudioConfigBin(gorgonAudio *audio,const char *filename)
+int gorgonLoadAudioConfigBin(gorgonAudio *audio, char *filename)
 {
-	FILE 	*f;
+	FILE 	*file;
 	char 	*data;
 	int 	ofs=0,x=0;
-	int 	size=file_size(filename);
+	long 	size=file_size(filename);
+	int	error;
 	if(size>0)
 	{
-		f=fopen(filename,"rb");
+		file=fopen(filename,"rb");
 		data=(char *)malloc(size);
 		if(data!=NULL)
 		{
-			int error;
-			fread(&(data[0]),1,size, f);
-			fclose(f);
-			error=gorgonLoadAudioConfigBinFromMemory(audio,data,&ofs);
+			
+			fread(&(data[0]),1,size, file);
+			fclose(file);
+			error=gorgonLoadAudioConfigBin_fm(audio,data,&ofs);
 			free(data);
 			return error;
 		}
-		fclose(f);
+		fclose(file);
 		return GORGON_MEMORY_ERROR;
 	}
 	gorgonGetDefaultAudioConfig(audio);
@@ -130,7 +130,7 @@ int gorgonLoadAudioConfigBin(gorgonAudio *audio,const char *filename)
  * @since: 16/05/2008
  * @final: 16/05/2008
  * @param: gorgonAudio *, apontador para o gorgonAudio que possui as confugurações que deseja-se salvar no arquivo
- * @param: const char *, string com o nome do arquivo de saída
+ * @param: char *, string com o nome do arquivo de saída
  * @return: int error
  * @exemple:
  *
@@ -139,7 +139,7 @@ int gorgonLoadAudioConfigBin(gorgonAudio *audio,const char *filename)
  * if(gorgonSaveAudioConfigBin(&audio,"audioConf.bin")!=GORGON_OK)
  *		printf("erro!\n");
  */
-int gorgonSaveAudioConfigBin(gorgonAudio *audio,const char * filename)
+int gorgonSaveAudioConfigBin(gorgonAudio *audio,char * filename)
 {
 	FILE *f;
 	if(audio!=NULL)
@@ -279,12 +279,12 @@ int gorgonSaveAudioConfigBin(gorgonAudio *audio,const char * filename)
  * @since: 20/11/2007
  * @last: 19/05/2008
  * @param FMOD_SYSTEM** : apontador do apontador do systema de audio
- * @param const char *  : nome do arquivo de configuração
+ * @param char *  : nome do arquivo de configuração
  * @return: int gorgon_error
  * @abstract: função para iniciar o dispositivo de áudio
  */
 //int createSoundSystem(FMOD_SYSTEM **system,short voices)
-int gorgonCreateSoundSystem(gorgonAudio *audio,const char *filename)
+int gorgonCreateSoundSystem(gorgonAudio *audio,char *filename)
 {
 	int error;
 	error=gorgonLoadAudioConfigBin(audio,filename);
@@ -306,7 +306,7 @@ int gorgonCreateSoundSystem(gorgonAudio *audio,const char *filename)
 int gorgonDestroySoundSystem(gorgonAudio *audio)
 {
 	if(FMOD_System_Close(audio->system)!=FMOD_OK)	return 0;
-    if(FMOD_System_Release(audio->system)!=FMOD_OK)	return 0;;
+    	if(FMOD_System_Release(audio->system)!=FMOD_OK)	return 0;;
 	return 1;
 }
 /**

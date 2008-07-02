@@ -9,12 +9,12 @@
 int gorgonSaveSprite_f(FILE *file,gorgonSprite *sprite);
 int gorgonSaveSpritePack_f(FILE *file, gorgonSpritePack *spritePack);
 
-int gorgonSaveSprite(const char *filename,gorgonSprite *sprite);
-int gorgonSaveSpritePack(const char *filename,gorgonSpritePack *spritePack);
+int gorgonSaveSprite(char *filename,gorgonSprite *sprite);
+int gorgonSaveSpritePack(char *filename,gorgonSpritePack *spritePack);
 
 int gorgonLoadSprite_fm(gorgonSprite *sprite, char *data, int *ofs);
 int gorgonLoadSpritePack_fm(gorgonSpritePack *spritePack, char *data, int *ofs);
 
-int gorgonLoadSprite(gorgonSprite *sprite,const char *filename);
-int gorgonLoadSpritePack(gorgonSpritePack *spritePack,const char *filename);
+int gorgonLoadSprite(gorgonSprite *sprite,char *filename);
+int gorgonLoadSpritePack(gorgonSpritePack *spritePack,char *filename);
 #endif

@@ -37,4 +37,5 @@ int gorgonDestroySpritePack(gorgonSpritePack *spritePack);
 int gorgonDrawSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,char type,short posX,short posY);
 int gorgonDrawRotatedSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,char type,short angle, short posX,short posY);
 int gorgonDrawSpriteByGroup(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short group,short spr,char type,short posX,short posY);
+int gorgonBlitSpriteByIndex(BITMAP *layer,gorgonSpritePack *a,RGB *pal,short index,short posX,short posY,short sourceX,short sourceY,short destX,short destY,short width,short height);
 #endif

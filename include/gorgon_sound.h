@@ -25,11 +25,11 @@ typedef struct
 
 
 int gorgonGetDefaultAudioConfig(gorgonAudio *audio);
-int gorgonLoadAudioConfigBin(gorgonAudio *audio,const char *filename);
-int gorgonSaveAudioConfigBin(gorgonAudio *audio,const char * filename);
+int gorgonLoadAudioConfigBin(gorgonAudio *audio,char *filename);
+int gorgonSaveAudioConfigBin(gorgonAudio *audio,char * filename);
 //int saveAudioConfig(gorgonAudio *audio);
 //int loadAudioConfig(gorgonAudio *audio);
-int gorgonCreateSoundSystem(gorgonAudio *audio,const char *filename);
+int gorgonCreateSoundSystem(gorgonAudio *audio,char *filename);
 int gorgonDestroySoundSystem(gorgonAudio *audio);
 int gorgonLoadSound(gorgonSound **sound,char *name,gorgonAudio *audio);
 int gorgonDestroySound(gorgonSound *sound);

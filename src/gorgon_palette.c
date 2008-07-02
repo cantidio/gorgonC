@@ -193,11 +193,11 @@ int gorgonLoadPalette_fm(RGB **palette,char *data,int *ofs)
  */
 int gorgonLoadPalette(RGB **palette,char *filename)
 {
-	FILE *file;
-	char *data;
-	long size=file_size(filename);
-	int ofs=0;
-	int error;
+	FILE	*file;
+	char	*data;
+	long	size=file_size(filename);
+	int	ofs=0;
+	int	error;
 	if(size>0)
 	{
 		file=fopen(filename,"rb");

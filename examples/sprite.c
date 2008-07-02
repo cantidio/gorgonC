@@ -35,19 +35,26 @@ void denit()
 }
 int main()
 {
+	int i=0;
 	gorgonSpritePack spritePack1;
 	gorgonSpritePack spritePack;
 	init();	
 
-	if(gorgonLoadSpritePackFromSff(&spritePack1,"yamatto.sff")!=GORGON_OK)		return 1;
-	if(gorgonSaveSpritePack("yamatto.spk",&spritePack1)!=GORGON_OK)		return 1;
-	if(gorgonLoadSpritePack(&spritePack,"yamatto.spk")!=GORGON_OK)			return 1;
+	if(gorgonLoadSpritePackFromSff(&spritePack1,"menu.sff")!=GORGON_OK)		return 1;
+	if(gorgonSaveSpritePack("menu.spk",&spritePack1)!=GORGON_OK)		return 1;
+	if(gorgonLoadSpritePack(&spritePack,"menu.spk")!=GORGON_OK)			return 1;
 
 	while(!key[KEY_ESC])
 	{
-		gorgonDrawSpriteByIndex(screen,&spritePack,NULL,0,NORMAL,200,200);
-		
+		clear(screen);
+		if(key[KEY_RIGHT] && i<spritePack.spriteNumber-2) i++;
+		else if(key[KEY_LEFT] && i>0) i--;
+		gorgonDrawSpriteByIndex(screen,&spritePack,NULL,i,NORMAL,200,200);
+		textprintf_ex(screen,font,10,10,makecol(255,255,255),-1,"index: %d",i);
+		rest(80);
 	}
+	gorgonDestroySpritePack(&spritePack1);
+	gorgonDestroySpritePack(&spritePack);
 	denit();
 	return 0;
 }

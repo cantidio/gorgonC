@@ -89,7 +89,7 @@ int gorgonSaveSpritePack_f(FILE *file, gorgonSpritePack *spritePack)
  * @author: Cantídio Oliveira Fontes
  * @since: 13/06/2008
  * @final: 14/06/2008
- * @param: const char *, string com o nome do arquivo a ser salvo
+ * @param: char *, string com o nome do arquivo a ser salvo
  * @param: gorgonSpritePack *, ponteiro para um pacote de sprites
  * @return: int gorgon_error
  * @example:
@@ -99,7 +99,7 @@ int gorgonSaveSpritePack_f(FILE *file, gorgonSpritePack *spritePack)
  * if(gorgonSaveSpritePack("teste.spk",&spritePack)!=GORGON_OK)
  *	printf("erro\n");
  */
-int gorgonSaveSprite(const char *filename,gorgonSprite *sprite)
+int gorgonSaveSprite(char *filename,gorgonSprite *sprite)
 {
 	FILE *file;
 	int error;
@@ -127,7 +127,7 @@ int gorgonSaveSprite(const char *filename,gorgonSprite *sprite)
  * @author: Cantídio Oliveira Fontes
  * @since: 13/06/2008
  * @final: 14/06/2008
- * @param: const char *, string com o nome do arquivo a ser salvo
+ * @param: char *, string com o nome do arquivo a ser salvo
  * @param: gorgonSpritePack *, ponteiro para um pacote de sprites
  * @return: int gorgon_error
  * @example:
@@ -137,7 +137,7 @@ int gorgonSaveSprite(const char *filename,gorgonSprite *sprite)
  * if(gorgonSaveSpritePack("teste.spk",&spritePack)!=GORGON_OK)
  *	printf("erro\n");
  */
-int gorgonSaveSpritePack(const char *filename,gorgonSpritePack *spritePack)
+int gorgonSaveSpritePack(char *filename,gorgonSpritePack *spritePack)
 {
 	FILE *file;
 	int error;
@@ -281,7 +281,7 @@ int gorgonLoadSpritePack_fm(gorgonSpritePack *spritePack, char *data, int *ofs)
  * @since: 13/06/2008
  * @final: 14/06/2008
  * @param: gorgonSprite *, ponteiro para um sprites
- * @param: const char *, string com o nome do arquivo a ser aberto
+ * @param: char *, string com o nome do arquivo a ser aberto
  * @return: int gorgon_error
  * @example:
  *
@@ -290,7 +290,7 @@ int gorgonLoadSpritePack_fm(gorgonSpritePack *spritePack, char *data, int *ofs)
  * if(gorgonLoadSprite(&sprite,"teste.spk")!=GORGON_OK)
  *	printf("erro");
  */
-int gorgonLoadSprite(gorgonSprite *sprite,const char *filename)
+int gorgonLoadSprite(gorgonSprite *sprite,char *filename)
 {
 	FILE *file;
 	long size=file_size(filename);
@@ -304,8 +304,11 @@ int gorgonLoadSprite(gorgonSprite *sprite,const char *filename)
 		{
 			file=fopen(filename,"rb");
 			data=(char *)malloc(size);
+
 			fread(&(data[0]),1,size, file);
+
 			fclose(file);
+
 			error=gorgonLoadSprite_fm(sprite,data,&ofs);
 			free(data);
 			return error;
@@ -321,7 +324,7 @@ int gorgonLoadSprite(gorgonSprite *sprite,const char *filename)
  * @since: 13/06/2008
  * @final: 14/06/2008
  * @param: gorgonSpritePack *, ponteiro para um pacote de sprites
- * @param: const char *, string com o nome do arquivo a ser aberto
+ * @param: char *, string com o nome do arquivo a ser aberto
  * @return: int gorgon_error
  * @example:
  *
@@ -330,7 +333,7 @@ int gorgonLoadSprite(gorgonSprite *sprite,const char *filename)
  * if(gorgonLoadSpritePack(&spritePack,"teste.spk")!=GORGON_OK)
  *	printf("erro");
  */
-int gorgonLoadSpritePack(gorgonSpritePack *spritePack,const char *filename)
+int gorgonLoadSpritePack(gorgonSpritePack *spritePack,char *filename)
 {
 	FILE *file;
 	long size=file_size(filename);
@@ -342,6 +345,7 @@ int gorgonLoadSpritePack(gorgonSpritePack *spritePack,const char *filename)
 	{
 		if(size>0)
 		{
+
 			file=fopen(filename,"rb");
 			data=(char *)malloc(size);
 			fread(&(data[0]),1,size, file);

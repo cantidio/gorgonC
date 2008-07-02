@@ -76,4 +76,6 @@ int gorgonDestroyAnimation(gorgonAnimation *animation);
 int gorgonDestroyAnimationPack(gorgonAnimationPack *animationPack);
 
 void gorgonPrintAnimationPackValues(gorgonAnimationPack *pk);
+
+int gorgonAnimationFinished(gorgonAnimation *animation);
 #endif
