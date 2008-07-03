@@ -3,12 +3,14 @@
  *
  * @author: Cantídio Oliveira Fontes
  * @since: 24/26/2008
- * @final: 25/06/2008
+ * @final: 01/07/2008
  */
 #ifndef GORGON_BACKGROUND_FILE
 #define GORGON_BACKGROUND_FILE
 
 #include "gorgon_background.h"
+#include "gorgon_animation_file.h"
+#include "gorgon_sprite_file.h"
 
 int gorgonSaveTile_f(FILE *file, gorgonTile *tile);
 int gorgonSaveLayer_f(FILE *file, gorgonLayer *layer);

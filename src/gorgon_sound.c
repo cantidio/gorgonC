@@ -287,11 +287,25 @@ int gorgonSaveAudioConfigBin(gorgonAudio *audio,char * filename)
 int gorgonCreateSoundSystem(gorgonAudio *audio,char *filename)
 {
 	int error;
+	FMOD_RESULT result;
 	error=gorgonLoadAudioConfigBin(audio,filename);
-	if(error!=GORGON_OK) 																		return error;
-	if(FMOD_System_Create(&audio->system)!=FMOD_OK)												return GORGON_SOUND_SYSTEM_ERROR;
-	if(FMOD_System_Init(audio->system, audio->maxChannels, FMOD_INIT_NORMAL, NULL)!=FMOD_OK)	return GORGON_SOUND_SYSTEM_ERROR;
-    return 1;
+	if(error!=GORGON_OK)
+		return error;
+	result=FMOD_System_Create(&audio->system);
+	if(result!=FMOD_OK)
+	{
+		audio->audio=0;
+		printf("%s\n",FMOD_ErrorString(result));
+		return GORGON_SOUND_SYSTEM_ERROR;
+	}
+	result=FMOD_System_Init(audio->system, audio->maxChannels, FMOD_INIT_NORMAL, NULL);
+	if(result!=FMOD_OK)
+	{
+		audio->audio=0;
+		printf("%s\n",FMOD_ErrorString(result));
+		return GORGON_SOUND_SYSTEM_ERROR;
+	}
+    return GORGON_OK;
 }
 /**
  * destroySoundSystem
@@ -305,7 +319,7 @@ int gorgonCreateSoundSystem(gorgonAudio *audio,char *filename)
  */
 int gorgonDestroySoundSystem(gorgonAudio *audio)
 {
-	if(FMOD_System_Close(audio->system)!=FMOD_OK)	return 0;
+	if(FMOD_System_Close(audio->system)!=FMOD_OK)		return 0;
     	if(FMOD_System_Release(audio->system)!=FMOD_OK)	return 0;;
 	return 1;
 }
@@ -326,9 +340,14 @@ int gorgonLoadSound(gorgonSound **sound,char *name,gorgonAudio *audio)
 	//MOD_SOUND *sound;
 	//FMOD_LOOP_NORMAL
 	//FMOD_CREATESTREAM
-	if(FMOD_System_CreateSound(audio->system, name, FMOD_SOFTWARE | FMOD_2D | FMOD_CREATESTREAM, 0, sound)!=FMOD_OK)
-		return GORGON_LOAD_SOUND_ERROR;
-	return GORGON_OK;
+	if(audio->audio)
+	{
+		if(FMOD_System_CreateSound(audio->system, name, FMOD_SOFTWARE | FMOD_2D | FMOD_CREATESTREAM, 0, sound)!=FMOD_OK)
+			return GORGON_LOAD_SOUND_ERROR;
+		return GORGON_OK;
+	}
+	*sound=NULL;
+	return GORGON_SOUND_SYSTEM_ERROR;
 }
 /**
  * destroySound
@@ -364,7 +383,7 @@ int gorgonPlaySound(gorgonSound *sound,gorgonAudio *audio,short type)
 {
 	FMOD_CHANNEL **channel;
 	float volume;
-	if(sound==NULL || type>3 || type<1) return 0;
+	if(sound==NULL || type>3 || type<1 || !audio->audio) return 0;
 	switch(type)
 	{
 		case 1:
