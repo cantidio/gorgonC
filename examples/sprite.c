@@ -7,7 +7,6 @@
  * @since: 13/06/2008
  * @final: 14/06/2008
  */
- 
 void init()
 {
 	int depth;
@@ -35,19 +34,37 @@ void denit()
 }
 int main()
 {
-	int i=0;
+	int 	i=0;
+	char 	name[30];
+	BITMAP *layer;
+	PALETTE pal;
 	gorgonSpritePack spritePack1;
 	gorgonSpritePack spritePack;
 	init();	
 
-	if(gorgonLoadSpritePackFromSff(&spritePack1,"menu.sff")!=GORGON_OK)		return 1;
-	if(gorgonSaveSpritePack("menu.spk",&spritePack1)!=GORGON_OK)		return 1;
-	if(gorgonLoadSpritePack(&spritePack,"menu.spk")!=GORGON_OK)			return 1;
-
+	if(gorgonLoadSpritePackFromSff(&spritePack1,"intro.sff")!=GORGON_OK)	return 1;
+	if(gorgonSaveSpritePack("intro.spk",&spritePack1)!=GORGON_OK)		return 1;
+	if(gorgonLoadSpritePack(&spritePack,"intro.spk")!=GORGON_OK)		return 1;
+/*layer=create_bitmap(320,100);
+	for(i=0; i<spritePack.spriteNumber; i++)
+	{
+		sprintf(name,"saida_%d.bmp",i);
+		printf("%s\n",name);
+		spritePack.sprite[i].x=0;
+		spritePack.sprite[i].y=spritePack.sprite[i].image->h;
+		
+		clear_to_color(layer,makecol(255,0,255));
+		gorgonDrawSpriteByIndex(layer,&spritePack,NULL,i,H_FLIP,100,80);
+		get_pallete(pal);
+		save_bmp(name,layer,pal);
+		
+	}
+	i=0;
+	destroy_bitmap(layer);*/
 	while(!key[KEY_ESC])
 	{
 		clear(screen);
-		if(key[KEY_RIGHT] && i<spritePack.spriteNumber-2) i++;
+		if(key[KEY_RIGHT] && i<spritePack.spriteNumber-1) i++;
 		else if(key[KEY_LEFT] && i>0) i--;
 		gorgonDrawSpriteByIndex(screen,&spritePack,NULL,i,NORMAL,200,200);
 		textprintf_ex(screen,font,10,10,makecol(255,255,255),-1,"index: %d",i);

@@ -8,7 +8,7 @@
  * @param: gorgonClsn *, ponteiro para uma gorgonClsn que deseja ser criada
  * @param: short, numero de retangulos de colisoes a serem criados
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * short number=1;
  * gorgonClsn Clsn;
@@ -48,7 +48,7 @@ int gorgonCreateClsn(gorgonClsn *clsn,short number)
  * @param: short, posicao y1 do retangulo de colisao
  * @param: short, posicao y2 do retangulo de colisao
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * short index=1, x1=0, x2=10, y1=3, y2=-5;
  * gorgonClsn Clsn;
@@ -86,7 +86,7 @@ int gorgonSetClsnValues(gorgonClsn *clsn,short index,short x1,short x2,short y1,
  * @param: short, tempo que o frame será exibido
  * @param: short, efeito usado no frame
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * short group=1,sprite=0,x=0,y=0,time=10,effect=0;
  * gorgonFrame frame;
@@ -125,7 +125,7 @@ int gorgonCreateFrame(gorgonFrame *frame, short group,short spr,short x, short y
  * @param: short, identificador da animacao
  * @param: short, numero de frames da animacao
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * short action=1001,frames=10;
  * gorgonAnimation animation;
@@ -165,7 +165,7 @@ int gorgonCreateAnimation(gorgonAnimation *animation,short action,short frames,s
  * @param: gorgonAnimationPack *, ponteiro para um pacote de animações a ser criado
  * @param: short, número de animações que esse pacote terá
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * gorgonAnimationPack pack;
  * short x=10;
@@ -199,7 +199,7 @@ int gorgonCreateAnimationPack(gorgonAnimationPack *pack,short animation)
  * @param: gorgonAnimation *, ponteiro para um gorgonAnimation que deseja-se otimizar
  * @param: gorgonSpritePack *, ponteiro para um gorgonSpritePack
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * gorgonAnimation anim;
  * gorgonSpritePack sprites;
@@ -238,7 +238,7 @@ int gorgonMakeAnimationIndexes(gorgonAnimation *anim, gorgonSpritePack *sprites)
  * @param: gorgonAnimationPack *, ponteiro para um gorgonAnimationPack que deseja-se otimizar
  * @param: gorgonSpritePack *, ponteiro para um gorgonSpritePack
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * gorgonAnimationPack animationPack;
  * gorgonSpritePack spritePack;
@@ -264,43 +264,59 @@ int gorgonMakeAnimationPackIndexes(gorgonAnimationPack *animationPack,gorgonSpri
 /**
  * funçao para desenhar uma colisao
  *
- * @author: Cantídio Oliveira Fontes
- * @since: 02/05/2008
- * @final: 02/05/2008
- * @param: BITMAP *, ponteiro para uma superficie
- * @param: gorgonClsn *, ponteiro para um gorgonClsn que deseja ser desenhado
- * @param: short, tipo de colisao a ser desenhada, CLSN_RED, CLSN_BLUE, CLSN_GREEN
- * @param: short, posicao x de onde será desenhada a colisão
- * @param: short, posicao y de de onde será desenhada a colisão
- * @return: int gorgon_error
- * @exemple:
+ * @author:	Cantídio Oliveira Fontes
+ * @since: 	02/05/2008
+ * @final: 	05/07/2008
+ * @param: 	BITMAP *, ponteiro para uma superficie
+ * @param: 	gorgonClsn *, ponteiro para um gorgonClsn que deseja ser desenhado
+ * @param: 	short, tipo de colisao a ser desenhada, CLSN_RED, CLSN_BLUE, CLSN_GREEN
+ * @param: 	short, posicao x de onde será desenhada a colisão
+ * @param: 	short, posicao y de de onde será desenhada a colisão
+ * @return:	int gorgon_error
+ * @example:
  *
  * short posX=20,posY=10;
  * gorgonClsn Clsn;
  * BITMAP *layer;
  *
- *  if(gorgonDrawClsn(layer,&Clsn,CLSN_BLUE,posX,posY)!=GORGON_OK)
+ *  if(gorgonDrawClsn(layer,&Clsn,makecol(255,0,0),posX,posY)!=GORGON_OK)
  *	  printf("erro\n");
  */
-int gorgonDrawClsn(BITMAP *layer, gorgonClsn *clsn,short type,short posX,short posY)
+int gorgonDrawClsn(BITMAP *layer, gorgonClsn *clsn,int color,short posX,short posY,short direction)
 {
 	short i;
-	int col;
-	if(clsn!=NULL)
+	if(layer!=NULL)
 	{
-		switch(type)
+		if(clsn!=NULL)
 		{
-			case CLSN_GREEN:	col=makecol(0,255,0);		break;
-			case CLSN_BLUE:	col=makecol(0,0,255);		break;
-			case CLSN_RED:		col=makecol(255,0,0);		break;
-			default:		col=makecol(200,200,200);	break;
+			for(i=0; i<clsn->boxNumber; i++)
+			{
+				if(direction==NORMAL)
+				{
+					rect(layer,posX + clsn->x1[i],posY+ clsn->y1[i],posX+clsn->x2[i],posY+clsn->y2[i],color);
+				}
+				else
+					rect(layer,posX - clsn->x1[i],posY+ clsn->y1[i],posX-clsn->x2[i],posY+clsn->y2[i],color);
+				
+			}
+			return GORGON_OK;
 		}
-		for(i=0; i<clsn->boxNumber; rect(layer,posX + clsn->x1[i],posY+ clsn->y1[i],posX+clsn->x2[i],posY+clsn->y2[i],col),i++);
-		return GORGON_OK;
+		return GORGON_INVALID_CLSN;
 	}
-	return GORGON_INVALID_CLSN;
+	return GORGON_INVALID_IMAGE;
 }
-
+int gorgonDrawAnimationClsn(BITMAP *layer, gorgonAnimation *animation,short posX, short posY, short direction)
+{
+	int error;
+	if(animation!=NULL)
+	{
+		error=gorgonDrawClsn(layer,&animation->frame[animation->frameOn].clsnBlue,makecol(0,0,255),posX,posY,direction);
+//		if(error!=GORGON_OK) return error;
+		error=gorgonDrawClsn(layer,&animation->frame[animation->frameOn].clsnRed,makecol(255,0,0),posX,posY,direction);
+//		if(error!=GORGON_OK) return error;
+	}
+	return GORGON_INVALID_ANIMATION;
+}
 /**
  * função para imprimir uma animacao
  *
@@ -315,7 +331,7 @@ int gorgonDrawClsn(BITMAP *layer, gorgonClsn *clsn,short type,short posX,short p
  * @param: short, posiçao que será desenhada no eixoX
  * @param: short, posição que será desenhada no eixoY
  * @return: int gorgon_error
- * @exemple:
+ * @example:
  *
  * gorgonAnimation anim;
  * gorgonSpritePack sprites;
@@ -638,4 +654,79 @@ int gorgonAnimationFinished(gorgonAnimation *animation)
 		return 0;
 	}
 	return 1;//se a animacao for nula retorna como a mesma acabou
+}
+/**
+ * função para retornar de duas animações colidiram entre si
+ *
+ * @author: 	Cantídio Oliveira Fontes
+ * @since:	05/07/2008
+ * @final:	05/07/2008
+ * @param:	gorgonAnimation *
+ * @param:	int, x da primeira animação
+ * @param:	int, y da primeira animação
+ * @param:	short, qual caixa verificar da animação 1
+ * @param:	gorgonAnimation *
+ * @param:	int, x da segunda animação
+ * @param:	int, y da segunda animação
+ * @param:	short, qual caixa verificar da animação 2
+ */
+int gorgonAnimationClsn(gorgonAnimation *animation1, int x1, int y1, short clsn1, short direction1,gorgonAnimation *animation2, int x2, int y2, short clsn2,short direction2)
+{
+	int i,j;
+	int width, height;
+	int mod1x=1;
+	int mod1y=1;
+	int mod2x=1;
+	int mod2y=1;
+	gorgonClsn gclsn1;
+	gorgonClsn gclsn2;
+	int a,b;
+	if(animation1!=NULL && animation2!=NULL && animation1->frameOn<animation1->frames && animation2->frameOn<animation2->frames)
+	{
+		switch(clsn1)
+		{
+			case CLSN_BLUE:	gclsn1=animation1->frame[animation1->frameOn].clsnBlue;	break;
+			case CLSN_RED:		gclsn2=animation1->frame[animation1->frameOn].clsnRed;	break;
+		}
+		switch(clsn2)
+		{
+			case CLSN_BLUE:	gclsn1=animation2->frame[animation2->frameOn].clsnBlue;	break;
+			case CLSN_RED:		gclsn2=animation2->frame[animation2->frameOn].clsnRed;	break;
+		}
+		if(direction1==H_FLIP)
+//			mod1x=-1;
+		if(direction2==H_FLIP)
+			mod2x=-1;
+		for(i=0; i<gclsn1.boxNumber; i++)
+		{
+			for(j=0; j<gclsn2.boxNumber; j++)
+			{
+				width	= gclsn2.x2[j] - gclsn2.x1[j];
+				height	= gclsn2.y2[j] - gclsn2.y1[j];
+
+				if(width<0)	width*=-1;
+				if(height<0)	height*=-1;
+				
+				if(direction2==H_FLIP)
+				{
+					a=-gclsn2.x1[j];
+					b=-gclsn2.x2[j];
+				}
+				else
+				{
+					a=gclsn2.x2[j];
+					b=gclsn2.x1[j];
+				}
+				if
+				(!(
+					(x1 + (gclsn1.x1[i]*mod1x) > x2 + a)		||
+					(y1 + (gclsn1.y1[i]*mod1y) > y2 + mod2y*gclsn2.y2[j] + mod2x*gclsn2.y1[j])		||
+					(x1 + (gclsn1.x2[i]*mod1x) < x2 + b)			||
+					(y1 + (gclsn1.y2[i]*mod1y) < y2 + mod2y*gclsn2.y1[j])
+				))
+					return 1;
+			}
+		}
+	}
+	return 0;
 }

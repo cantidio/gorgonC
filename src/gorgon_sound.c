@@ -383,18 +383,21 @@ int gorgonPlaySound(gorgonSound *sound,gorgonAudio *audio,short type)
 {
 	FMOD_CHANNEL **channel;
 	float volume;
-	if(sound==NULL || type>3 || type<1 || !audio->audio) return 0;
+	if(sound==NULL || type>3 || type<1 || !audio->audio) return GORGON_SOUND_SYSTEM_ERROR;
 	switch(type)
 	{
 		case 1:
+			if(!audio->music)	return GORGON_OK;
 			channel=&audio->musicChannel;
 			volume=audio->musicVolume;
 			break;
 		case 2:
+			if(!audio->voice)	return GORGON_OK;
 			channel=&audio->voiceChannel;
 			volume=audio->voiceVolume;
 			break;
 		case 3:
+			if(!audio->effects)	return GORGON_OK;
 			channel=&audio->effectsChannel;
 			volume=audio->effectsVolume;
 			break;
@@ -402,10 +405,37 @@ int gorgonPlaySound(gorgonSound *sound,gorgonAudio *audio,short type)
 	if(FMOD_System_PlaySound(audio->system, FMOD_CHANNEL_FREE, sound, 0, channel)==FMOD_OK)
 	{
 		if(FMOD_Channel_SetVolume(*channel,volume)!=FMOD_OK)
-			return 0;
+			return GORGON_SOUND_SYSTEM_ERROR;
 	}
-	else return 0;
-	return 1;
+	else
+		return GORGON_SOUND_SYSTEM_ERROR;
+	return GORGON_OK;
+}
+/**
+ * função para pausar um canal de áudio
+ *
+ * @author: Cantídio Oliveira Fontes
+ * @since:	04/07/2008
+ * @final:	04/07/2008
+ * @param:	gorgonAudio *, ponteiro para o sistema de audio
+ * @param:	int, o canal a ser pausado
+ * @return:	int gorgon_error
+ */
+int gorgonStopChannel(gorgonAudio *audio,int channel)
+{
+	switch(channel)
+	{
+		case 1:
+			if(FMOD_Channel_Stop(audio->musicChannel)!=FMOD_OK) return GORGON_SOUND_SYSTEM_ERROR;
+			break;
+		case 2:
+			if(FMOD_Channel_Stop(audio->voiceChannel)!=FMOD_OK) return GORGON_SOUND_SYSTEM_ERROR;
+			break;
+		case 3:
+			if(FMOD_Channel_Stop(audio->effectsChannel)!=FMOD_OK) return GORGON_SOUND_SYSTEM_ERROR;
+			break;
+	}
+	return GORGON_OK;
 }
 /**
  * gorgonToogleSound

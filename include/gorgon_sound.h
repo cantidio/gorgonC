@@ -6,8 +6,10 @@
 #include "../fmod/include/fmod_errors.h"
 #include "gorgon_error.h"
 #include <allegro.h>
-//#include "file.h"
 #define gorgonSound FMOD_SOUND
+#define GORGON_MUSIC	1
+#define GORGON_VOICE	2
+#define GORGON_EFFECT	3
 typedef struct
 {
 	FMOD_SYSTEM *system;			//o sistema de audio
@@ -35,7 +37,7 @@ int gorgonDestroySoundSystem(gorgonAudio *audio);
 int gorgonLoadSound(gorgonSound **sound,char *name,gorgonAudio *audio);
 int gorgonDestroySound(gorgonSound *sound);
 int gorgonPlaySound(gorgonSound *sound,gorgonAudio *audio,short type);
-//int gorgonStopSound(gorgonSound *sound,gorgonAudio *audio);//deve ser feita
+int gorgonStopChannel(gorgonAudio *audio,int channel);
 int gorgonToggleSound(gorgonAudio *audio);
 
 

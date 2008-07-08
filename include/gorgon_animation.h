@@ -58,6 +58,8 @@ typedef struct
 	short animationNumber;
 }gorgonAnimationPack;
 
+
+
 int gorgonCreateClsn(gorgonClsn *clsn,short number);
 int gorgonSetClsnValues(gorgonClsn *clsn,short index,short x1,short x2,short y1, short y2);
 int gorgonCreateFrame(gorgonFrame *a, short group,short spr,short x, short y,short time, short effect);
@@ -65,17 +67,16 @@ int gorgonCreateAnimation(gorgonAnimation *a,short action,short frames,short loo
 int gorgonCreateAnimationPack(gorgonAnimationPack *pack,short animation);
 int gorgonMakeAnimationIndexes(gorgonAnimation *anim, gorgonSpritePack *sprites);
 int gorgonMakeAnimationPackIndexes(gorgonAnimationPack *animationPack,gorgonSpritePack *spritePack);
-int gorgonDrawClsn(BITMAP *layer, gorgonClsn *clsn,short type,short posX,short posY);
+int gorgonDrawClsn(BITMAP *layer, gorgonClsn *clsn,int color,short posX,short posY,short direction);
+int gorgonDrawAnimationClsn(BITMAP *layer, gorgonAnimation *animation,short posX, short posY, short direction);
 
 int gorgonShowAnimation(BITMAP *layer,gorgonAnimation *anim,gorgonSpritePack *sprites,RGB *pal,char type,short posX,short posY);
-
-
 int gorgonDestroyClsn(gorgonClsn *clsn);
 int gorgonDestroyFrame(gorgonFrame *frame);
 int gorgonDestroyAnimation(gorgonAnimation *animation);
 int gorgonDestroyAnimationPack(gorgonAnimationPack *animationPack);
-
 void gorgonPrintAnimationPackValues(gorgonAnimationPack *pk);
-
 int gorgonAnimationFinished(gorgonAnimation *animation);
+
+int gorgonAnimationClsn(gorgonAnimation *animation1, int x1, int y1, short clsn1, short direction1,gorgonAnimation *animation2, int x2, int y2, short clsn2,short direction2);
 #endif

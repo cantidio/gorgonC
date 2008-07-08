@@ -1,4 +1,4 @@
-#biblioteca gorgon makefile
+# biblioteca gorgon makefile
 #	ar tv libgorgon.a lista os conteúdos da lib
 #	ar ds libnome.a lista_de_ficheiros_objecto para apagar os lobjteos
 #	ar rus libnome.a lista_de_ficheiros_objecto para atualizar
@@ -20,6 +20,9 @@ STATIC: GORGON_PALETTE GORGON_PCX GORGON_SFF GORGON_SPRITE GORGON_SPRITE_FILE GO
 	./obj/gorgon_background.o		\
 	./obj/gorgon_background_file.o
 	mv ./libgorgon.a ./static/libgorgon.a
+	@echo "Linhas de codigo:"
+	@cat ./src/*.c ./include/*.h  | wc -l
+
 
 #SHARED: GORGON_ANIMATION GORGON_ANIMATION_FILE GORGON_PALETTE GORGON_SFF GORGON_SOUND GORGON_SPRITE 
 #	gcc -shared -Wl,-soname,libgorgon.so.0.0.1 -o libgorgon.so.0.0.1 \
