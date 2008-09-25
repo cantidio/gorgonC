@@ -25,7 +25,6 @@ int gorgonLoadPalette(RGB **pal,char *filename);
 int gorgonDestroyPalette(RGB **palette);
 int gorgonCopyPalette(RGB **palette1, RGB *palette2);
 
-
 int gorgonDrawPalette(BITMAP *layer,RGB *pal);
 int gorgonCreatePaletteFromImage(RGB *palette,BITMAP *image,int r,int g,int b);
 #endif

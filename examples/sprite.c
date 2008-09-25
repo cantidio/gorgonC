@@ -40,11 +40,12 @@ int main()
 	PALETTE pal;
 	gorgonSpritePack spritePack1;
 	gorgonSpritePack spritePack;
-	init();	
-
-	if(gorgonLoadSpritePackFromSff(&spritePack1,"intro.sff")!=GORGON_OK)	return 1;
-	if(gorgonSaveSpritePack("intro.spk",&spritePack1)!=GORGON_OK)		return 1;
-	if(gorgonLoadSpritePack(&spritePack,"intro.spk")!=GORGON_OK)		return 1;
+	scanf("%s",&name);
+	init();
+	if(gorgonLoadSpritePackFromSff(&spritePack1,name)!=GORGON_OK)	return 1;
+	strcat(name,".spk");
+	if(gorgonSaveSpritePack(name,&spritePack1)!=GORGON_OK)		return 1;
+	if(gorgonLoadSpritePack(&spritePack,name)!=GORGON_OK)		return 1;
 /*layer=create_bitmap(320,100);
 	for(i=0; i<spritePack.spriteNumber; i++)
 	{
@@ -68,6 +69,10 @@ int main()
 		else if(key[KEY_LEFT] && i>0) i--;
 		gorgonDrawSpriteByIndex(screen,&spritePack,NULL,i,NORMAL,200,200);
 		textprintf_ex(screen,font,10,10,makecol(255,255,255),-1,"index: %d",i);
+		textprintf_ex(screen,font,10,20,makecol(255,255,255),-1,"Group: %d",spritePack.sprite[i].group);
+		textprintf_ex(screen,font,10,30,makecol(255,255,255),-1,"index: %d",spritePack.sprite[i].index);
+		textprintf_ex(screen,font,10,40,makecol(255,255,255),-1,"x: %d",spritePack.sprite[i].x);
+		textprintf_ex(screen,font,10,50,makecol(255,255,255),-1,"y: %d",spritePack.sprite[i].y);
 		rest(80);
 	}
 	gorgonDestroySpritePack(&spritePack1);

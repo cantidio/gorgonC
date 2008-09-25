@@ -3,17 +3,18 @@
 #	ar ds libnome.a lista_de_ficheiros_objecto para apagar os lobjteos
 #	ar rus libnome.a lista_de_ficheiros_objecto para atualizar
 #	ar rs libnome.a lista_de_ficheiros_objecto para criar
-COMP := gcc
+COMP := g++
 
 all: STATIC #SHARED
 
-STATIC: GORGON_PALETTE GORGON_PCX GORGON_SFF GORGON_SPRITE GORGON_SPRITE_FILE GORGON_SOUND GORGON_ANIMATION GORGON_ANIMATION_FILE GORGON_BACKGROUND GORGON_BACKGROUND_FILE
+STATIC: GORGON_PALETTE GORGON_PCX GORGON_SFF GORGON_SPRITE GORGON_SPRITE_FILE GORGON_INPUT GORGON_SOUND GORGON_ANIMATION GORGON_ANIMATION_FILE GORGON_BACKGROUND GORGON_BACKGROUND_FILE
 	ar rc libgorgon.a				\
 	./obj/gorgon_palette.o			\
 	./obj/gorgon_pcx.o			\
 	./obj/gorgon_sff.o			\
 	./obj/gorgon_sprite.o			\
 	./obj/gorgon_sprite_file.o		\
+	./obj/gorgon_input.o			\
 	./obj/gorgon_sound.o			\
 	./obj/gorgon_animation.o    		\
 	./obj/gorgon_animation_file.o		\
@@ -64,6 +65,10 @@ GORGON_SPRITE_FILE: ./src/gorgon_sprite_file.c ./include/gorgon_sprite_file.h
 	$(COMP) -c ./src/gorgon_sprite_file.c
 	mv gorgon_sprite_file.o ./obj/gorgon_sprite_file.o
 
+GORGON_INPUT: ./src/gorgon_input.c ./include/gorgon_input.h
+	$(COMP) -c ./src/gorgon_input.c
+	mv gorgon_input.o ./obj/gorgon_input.o
+	
 GORGON_SOUND: ./include/gorgon_sound.h ./src/gorgon_sound.c ./fmod/include/fmod.h ./fmod/lib/libfmodex.so.4.08.08
 	$(COMP) -c ./src/gorgon_sound.c 
 	mv gorgon_sound.o ./obj/gorgon_sound.o
@@ -87,12 +92,12 @@ GORGON_BACKGROUND_FILE: ./include/gorgon_background_file.h ./src/gorgon_backgrou
 list:
 	ar tv ./static/libgorgon.a
 
-clear:
-	@rm -rdf *~
-	@rm -rdf ./include/*~
-	@rm -rdf ./src/*~
-	@rm -rdf ./examples/*~
-	@rm -rdf ./testes/*~
+clean:
+	@rm -rf *~
+	@rm -rf ./include/*~
+	@rm -rf ./src/*~
+	@rm -rf ./examples/*~
+	@rm -rf ./testes/*~
 	
 test: ./static/libgorgon.a
 	$(COMP) ./testes/test.c -o ./testes/test.e ./static/libgorgon.a `allegro-config --libs` ./fmod/lib/libfmodex.so.4.08.08 -O2

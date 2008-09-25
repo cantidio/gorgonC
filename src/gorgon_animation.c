@@ -534,7 +534,7 @@ int gorgonDestroyFrame(gorgonFrame *frame)
 		gorgonDestroyClsn(&frame->clsnLeft);
 		gorgonDestroyClsn(&frame->clsnDown);
 		gorgonDestroyClsn(&frame->clsnRight);
-		frame->group	= 0;
+	/*		frame->group	= 0;
 		frame->spr	= 0;
 		frame->index	= 0;
 		frame->x	= 0;
@@ -543,6 +543,7 @@ int gorgonDestroyFrame(gorgonFrame *frame)
 		frame->effect	= 0;
 		frame->angle	= 0;		
 		frame->trans	= 0;	
+		*/
 		return GORGON_OK;
 	}
 	return GORGON_INVALID_FRAME;
@@ -620,10 +621,8 @@ int gorgonDestroyAnimationPack(gorgonAnimationPack *animationPack)
 void gorgonPrintAnimationPackValues(gorgonAnimationPack *pk)
 {
 	int i,j;
-	printf("numero de animações no pacote: %d\n",pk->animationNumber);
 	for(i=0; i<pk->animationNumber; i++)
 	{
-		printf("animacao: %d\n",i+1);
 		printf("action:%d\n",pk->animation[i].action);
 		printf("Numero de frames:%d\n",pk->animation[i].frames);
 		printf("looping: %d\n",pk->animation[i].looping);
@@ -694,7 +693,7 @@ int gorgonAnimationClsn(gorgonAnimation *animation1, int x1, int y1, short clsn1
 			case CLSN_RED:		gclsn2=animation2->frame[animation2->frameOn].clsnRed;	break;
 		}
 		if(direction1==H_FLIP)
-//			mod1x=-1;
+			mod1x=-1;
 		if(direction2==H_FLIP)
 			mod2x=-1;
 		for(i=0; i<gclsn1.boxNumber; i++)
@@ -704,8 +703,14 @@ int gorgonAnimationClsn(gorgonAnimation *animation1, int x1, int y1, short clsn1
 				width	= gclsn2.x2[j] - gclsn2.x1[j];
 				height	= gclsn2.y2[j] - gclsn2.y1[j];
 
-				if(width<0)	width*=-1;
-				if(height<0)	height*=-1;
+				if(width<0)
+				{
+					width*=-1;
+				}
+				if(height<0)
+				{
+					height*=-1;
+				}
 				
 				if(direction2==H_FLIP)
 				{

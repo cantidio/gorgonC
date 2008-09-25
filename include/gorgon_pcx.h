@@ -27,7 +27,7 @@
 
 }gorgonPCX;*/
 
-int gorgonLoadPcxFromMemory(BITMAP **image,char *data,int *ofs);
+int gorgonLoadPcx_fm(BITMAP **image,char *data,int *ofs);
 int gorgonSavePcx_f(FILE *f,BITMAP *image,RGB *pal);
 int gorgonSavePcx(const char *filename,BITMAP *image,RGB *pal);
 

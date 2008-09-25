@@ -17,7 +17,7 @@
  * if(gorgonLoadPcxFromMemory(&image,data,&ofs)!=GORGON_OK)
  *		printf("erro\n");
  */
-int gorgonLoadPcxFromMemory(BITMAP **image,char *data,int *ofs)
+int gorgonLoadPcx_fm(BITMAP **image,char *data,int *ofs)
 {
 	char	*identifier;
 	char	*version;
@@ -71,6 +71,7 @@ int gorgonLoadPcxFromMemory(BITMAP **image,char *data,int *ofs)
 				{
 					value = data[*ofs]; //check if upper 2 bit are set
 					(*ofs) +=1;
+					
 					if ((value & 0xc0) == 0xc0)
 					{
 						count = value & 0x3f;
@@ -136,8 +137,7 @@ int gorgonSavePcx_f(FILE *file,BITMAP *image,RGB *pal)
 	{
 		if(image!=NULL)
 		{
-			for(count=0; count<58; filler[count]=0,count++);
-		  	strcpy(filler,"pcx image saved using gorgonlib.");
+			strcpy(filler,"pcx image saved using gorgonlib.");
 		  	
 		  	depth		= bitmap_color_depth(image);
 		  	xEnd		= image->w-1;

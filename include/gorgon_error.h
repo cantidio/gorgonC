@@ -1,7 +1,7 @@
 
 #ifndef GORGON_ERROR
 #define GORGON_ERROR
-
+#define	gorgonError			int
 #define GORGON_OK			0	//processo executado com sucesso
 #define GORGON_MEMORY_ERROR 		1	//erro ao alocar memória
 #define GORGON_FILE_NOT_FOUND		2	//arquivo não encontrado
@@ -31,6 +31,6 @@
 #define GORGON_INVALID_LAYERPACK	26
 #define GORGON_INVALID_TILE		27	//valor para um tile do cenário é inválido, provavelmente ponteiro em NULL
 #define GORGON_INVALID_MEMORY_OFFSET	28
-
+#define	GORGON_INVALID_JOY_INPUT	29
 
 #endif

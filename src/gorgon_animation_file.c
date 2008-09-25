@@ -20,7 +20,7 @@
  * else if(gorgonSaveClsn(f,&Clsn)!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonSaveClsn_f(FILE *file, gorgonClsn *Clsn)
+gorgonError gorgonSaveClsn_f(FILE *file, gorgonClsn *Clsn)
 {
 	short i;
 	if(file!=NULL)
@@ -61,7 +61,7 @@ int gorgonSaveClsn_f(FILE *file, gorgonClsn *Clsn)
  * else if(gorgonSaveFrame(f,&frame)!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonSaveFrame_f(FILE *file, gorgonFrame *frame)
+gorgonError gorgonSaveFrame_f(FILE *file, gorgonFrame *frame)
 {
 	if(file!=NULL)
 	{
@@ -105,7 +105,7 @@ int gorgonSaveFrame_f(FILE *file, gorgonFrame *frame)
  * else if(gorgonSaveAnimation(f,&animation)!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonSaveAnimation_f(FILE *file, gorgonAnimation *animation)
+gorgonError gorgonSaveAnimation_f(FILE *file, gorgonAnimation *animation)
 {
 	int i;
 	int error;
@@ -146,7 +146,7 @@ int gorgonSaveAnimation_f(FILE *file, gorgonAnimation *animation)
  * if(gorgonSaveAnimationPack(f,&animPack)!=GORGON_OK)
  *	  printf("erro");
  */
-int gorgonSaveAnimationPack_f(FILE *file, gorgonAnimationPack *animationPack)
+gorgonError gorgonSaveAnimationPack_f(FILE *file, gorgonAnimationPack *animationPack)
 {
 	int i,error;
 	char header[55];
@@ -184,7 +184,7 @@ int gorgonSaveAnimationPack_f(FILE *file, gorgonAnimationPack *animationPack)
  * if(gorgonSaveClsn("teste.clsn",&clsn)!=GORGON_OK)
  *	  printf("erro");
  */
-int gorgonSaveClsn(char *filename, gorgonClsn *clsn)
+gorgonError gorgonSaveClsn(char *filename, gorgonClsn *clsn)
 {
 	FILE *file;
 	int error;
@@ -218,7 +218,7 @@ int gorgonSaveClsn(char *filename, gorgonClsn *clsn)
  * if(gorgonSaveFrame("teste.frame",&frame)!=GORGON_OK)
  *	  printf("erro");
  */
-int gorgonSaveFrame(char *filename, gorgonFrame *frame)
+gorgonError gorgonSaveFrame(char *filename, gorgonFrame *frame)
 {
 	FILE *file;
 	int error;
@@ -252,7 +252,7 @@ int gorgonSaveFrame(char *filename, gorgonFrame *frame)
  * if(gorgonSaveAnimation("teste.animation",&animation)!=GORGON_OK)
  *	  printf("erro");
  */
-int gorgonSaveAnimation(char *filename, gorgonAnimation *animation)
+gorgonError gorgonSaveAnimation(char *filename, gorgonAnimation *animation)
 {
 	FILE *file;
 	int error;
@@ -286,7 +286,7 @@ int gorgonSaveAnimation(char *filename, gorgonAnimation *animation)
  * if(gorgonSaveAnimationPack("teste.apk",&animPack)!=GORGON_OK)
  *	  printf("erro");
  */
-int gorgonSaveAnimationPack(char *filename, gorgonAnimationPack *animationPack)
+gorgonError gorgonSaveAnimationPack(char *filename, gorgonAnimationPack *animationPack)
 {
 	FILE *file;
 	int error;
@@ -322,7 +322,7 @@ int gorgonSaveAnimationPack(char *filename, gorgonAnimationPack *animationPack)
  * if(gorgonLoadClsn_fm(&clsn,data,&ofs)!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonLoadClsn_fm(gorgonClsn *clsn,char *data,int *ofs)
+gorgonError gorgonLoadClsn_fm(gorgonClsn *clsn,char *data,int *ofs)
 {
 	unsigned short *clsnNumber;
 	short *x1;
@@ -366,7 +366,7 @@ int gorgonLoadClsn_fm(gorgonClsn *clsn,char *data,int *ofs)
  * if(gorgonLoadFrame_fm(&frame,data,&ofs)!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonLoadFrame_fm(gorgonFrame *frame,char *data,int *ofs)
+gorgonError gorgonLoadFrame_fm(gorgonFrame *frame,char *data,int *ofs)
 {
 	short *group;
 	short *spr;
@@ -425,7 +425,7 @@ int gorgonLoadFrame_fm(gorgonFrame *frame,char *data,int *ofs)
  * if(gorgonLoadAnimation_fm(&animation,data,&ofs)!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonLoadAnimation_fm(gorgonAnimation *animation,char *data,int *ofs)
+gorgonError gorgonLoadAnimation_fm(gorgonAnimation *animation,char *data,int *ofs)
 {
 	short *action;
 	short *looping;
@@ -471,7 +471,7 @@ int gorgonLoadAnimation_fm(gorgonAnimation *animation,char *data,int *ofs)
  * if(gorgonLoadAnimationPack_fm(&animationPack,data,&ofs)!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonLoadAnimationPack_fm(gorgonAnimationPack *animationPack,char *data,int *ofs)
+gorgonError gorgonLoadAnimationPack_fm(gorgonAnimationPack *animationPack,char *data,int *ofs)
 {
 	int	error;
 	short	i;
@@ -514,7 +514,7 @@ int gorgonLoadAnimationPack_fm(gorgonAnimationPack *animationPack,char *data,int
  * if(gorgonLoadClsn(&clsn,"animation.gcs")!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonLoadClsn(gorgonClsn *clsn,char *filename)
+gorgonError gorgonLoadClsn(gorgonClsn *clsn,char *filename)
 {
 	FILE	*file;
 	long	size = file_size(filename);
@@ -553,7 +553,7 @@ int gorgonLoadClsn(gorgonClsn *clsn,char *filename)
  * if(gorgonLoadFrame(&frame,"frame.gfm")!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonLoadFrame(gorgonFrame *frame,char *filename)
+gorgonError gorgonLoadFrame(gorgonFrame *frame,char *filename)
 {
 	FILE	*file;
 	long	size = file_size(filename);
@@ -592,7 +592,7 @@ int gorgonLoadFrame(gorgonFrame *frame,char *filename)
  * if(gorgonLoadAnimation(&animation,"animation.gan")!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonLoadAnimation(gorgonAnimation *animation,char *filename)
+gorgonError gorgonLoadAnimation(gorgonAnimation *animation,char *filename)
 {
 	FILE	*file;
 	long	size = file_size(filename);
@@ -632,7 +632,7 @@ int gorgonLoadAnimation(gorgonAnimation *animation,char *filename)
  * if(gorgonLoadAnimationPack(&animationPack,"animation_exemple.bin")!=GORGON_OK)
  *	  printf("erro!\n");
  */
-int gorgonLoadAnimationPack(gorgonAnimationPack *animationPack,char *filename)
+gorgonError gorgonLoadAnimationPack(gorgonAnimationPack *animationPack,char *filename)
 {
 	FILE	*file;
 	long	size = file_size(filename);

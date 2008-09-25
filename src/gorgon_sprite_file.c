@@ -17,7 +17,7 @@
  * if(gorgonSaveSprite_f(file,&sprite)!=GORGON_OK)
  *	printf("erro\n");
  */
-int gorgonSaveSprite_f(FILE *file,gorgonSprite *sprite)
+gorgonError gorgonSaveSprite_f(FILE *file,gorgonSprite *sprite)
 {
 	if(file!=NULL)
 	{
@@ -51,9 +51,9 @@ int gorgonSaveSprite_f(FILE *file,gorgonSprite *sprite)
  * if(gorgonSaveSpritePack_f(file,&spritePack)!=GORGON_OK)
  *	printf("erro\n");
  */
-int gorgonSaveSpritePack_f(FILE *file, gorgonSpritePack *spritePack)
+gorgonError gorgonSaveSpritePack_f(FILE *file, gorgonSpritePack *spritePack)
 {
-	int error;
+	gorgonError error;
 	int i;
 	char fileType	= GORGON_SPRITEPACK_FILE;	
 	char version	= 1;
@@ -99,10 +99,10 @@ int gorgonSaveSpritePack_f(FILE *file, gorgonSpritePack *spritePack)
  * if(gorgonSaveSpritePack("teste.spk",&spritePack)!=GORGON_OK)
  *	printf("erro\n");
  */
-int gorgonSaveSprite(char *filename,gorgonSprite *sprite)
+gorgonError gorgonSaveSprite(char *filename,gorgonSprite *sprite)
 {
 	FILE *file;
-	int error;
+	gorgonError error;
 	if(filename!=NULL)
 	{
 		if(sprite!=NULL)
@@ -137,10 +137,10 @@ int gorgonSaveSprite(char *filename,gorgonSprite *sprite)
  * if(gorgonSaveSpritePack("teste.spk",&spritePack)!=GORGON_OK)
  *	printf("erro\n");
  */
-int gorgonSaveSpritePack(char *filename,gorgonSpritePack *spritePack)
+gorgonError gorgonSaveSpritePack(char *filename,gorgonSpritePack *spritePack)
 {
 	FILE *file;
-	int error;
+	gorgonError error;
 	if(filename!=NULL)
 	{
 		if(spritePack!=NULL)
@@ -178,9 +178,9 @@ int gorgonSaveSpritePack(char *filename,gorgonSpritePack *spritePack)
  * if(gorgonLoadSprite_fm(&sprite,&data,&ofs)!=GORGON_OK)
  *	printf("erro");
  */
-int gorgonLoadSprite_fm(gorgonSprite *sprite, char *data, int *ofs)
+gorgonError gorgonLoadSprite_fm(gorgonSprite *sprite, char *data, int *ofs)
 {
-	int error;
+	gorgonError error;
 	short *x;
 	short *y;
 	short *group;
@@ -200,8 +200,8 @@ int gorgonLoadSprite_fm(gorgonSprite *sprite, char *data, int *ofs)
 				sprite->y	= *y;
 				sprite->group	= *group;
 				sprite->index	= *index;
-
-				error=gorgonLoadPcxFromMemory(&sprite->image,data,ofs);
+				
+				error=gorgonLoadPcx_fm(&sprite->image,data,ofs);
 				if(error!=GORGON_OK) return error;
 				(*ofs)+=sizeof(char);
 				return gorgonLoadPalette_fm(&sprite->pal,data,ofs);
@@ -231,7 +231,7 @@ int gorgonLoadSprite_fm(gorgonSprite *sprite, char *data, int *ofs)
  * if(gorgonLoadSpritePack_fm(&spritePack,&data,&ofs)!=GORGON_OK)
  *	printf("erro");
  */
-int gorgonLoadSpritePack_fm(gorgonSpritePack *spritePack, char *data, int *ofs)
+gorgonError gorgonLoadSpritePack_fm(gorgonSpritePack *spritePack, char *data, int *ofs)
 {
 	int 	error;
 	int 	i;
@@ -255,12 +255,10 @@ int gorgonLoadSpritePack_fm(gorgonSpritePack *spritePack, char *data, int *ofs)
 				sprite	=(short*)&data[*ofs];	(*ofs)+=(sizeof(short));
 				spritePack->spriteNumber= *sprite;
 				spritePack->sprite	= (gorgonSprite *)malloc(sizeof(gorgonSprite)*spritePack->spriteNumber);
-
 				if(spritePack->sprite!=NULL)
 				{
 					for(i=0; i<spritePack->spriteNumber; i++)
 					{
-
 						error=gorgonLoadSprite_fm(&spritePack->sprite[i],data,ofs);
 						if(error!=GORGON_OK) return error;
 					}			
@@ -290,12 +288,12 @@ int gorgonLoadSpritePack_fm(gorgonSpritePack *spritePack, char *data, int *ofs)
  * if(gorgonLoadSprite(&sprite,"teste.spk")!=GORGON_OK)
  *	printf("erro");
  */
-int gorgonLoadSprite(gorgonSprite *sprite,char *filename)
+gorgonError gorgonLoadSprite(gorgonSprite *sprite,char *filename)
 {
 	FILE *file;
 	long size=file_size(filename);
 	int ofs=0;
-	int error;
+	gorgonError error;
 	char *data;
 
 	if(sprite!=NULL)
@@ -333,19 +331,18 @@ int gorgonLoadSprite(gorgonSprite *sprite,char *filename)
  * if(gorgonLoadSpritePack(&spritePack,"teste.spk")!=GORGON_OK)
  *	printf("erro");
  */
-int gorgonLoadSpritePack(gorgonSpritePack *spritePack,char *filename)
+gorgonError gorgonLoadSpritePack(gorgonSpritePack *spritePack,char *filename)
 {
 	FILE *file;
 	long size=file_size(filename);
 	int ofs=0;
-	int error;
+	gorgonError error;
 	char *data;
 
 	if(spritePack!=NULL)
 	{
 		if(size>0)
 		{
-
 			file=fopen(filename,"rb");
 			data=(char *)malloc(size);
 			fread(&(data[0]),1,size, file);

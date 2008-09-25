@@ -92,7 +92,7 @@ int gorgonLoadSffSpriteFromMemory(gorgonSff *sff,short index,char *data,int *ofs
 		else
 		{
 			sff->sprite[index].imageLinked=0;
-			gorgonLoadPcxFromMemory(&sff->sprite[index].image,data,ofs);
+			gorgonLoadPcx_fm(&sff->sprite[index].image,data,ofs);
 			if (!(int)*reusePalette)
 			{
 				sff->sprite[index].paletteLinked=0;
